@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tictactoe_client/data/cachedData.dart';
-import 'package:tictactoe_client/entities/User.dart';
+import 'package:tictactoe_client/entities/Player.dart';
 import 'package:tictactoe_client/presentation/dialogs/autherrordialog.dart';
 import 'package:tictactoe_client/presentation/pages/PlayRoom.dart';
 import 'package:tictactoe_client/presentation/utils.dart';
-import 'package:tictactoe_client/repositories/UserRepository.dart';
+import 'package:tictactoe_client/repositories/PlayerRepository.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -47,9 +47,9 @@ class _SignupPageState extends State<SignupPage> {
       _emailErrorMessage = null;
     });
 
-    await UserRepository.signUp(email: email, password: password);
-    if (user.token != null) {
-      Navigator.of(context).pushNamedAndRemoveUntil("home", (route) => false);
+    await playerRepository.signUp(email: email, password: password);
+    if (player.token != null) {
+      Navigator.of(context).pushNamedAndRemoveUntil("router", (route) => false);
     } else {
       showAutherrorDialog(context, "Signup error", "Cannot sign you up");
     }

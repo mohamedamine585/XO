@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tictactoe_client/entities/User.dart';
+import 'package:tictactoe_client/entities/Player.dart';
 import 'package:tictactoe_client/presentation/dialogs/autherrordialog.dart';
 import 'package:tictactoe_client/presentation/utils.dart';
-import 'package:tictactoe_client/repositories/UserRepository.dart';
+import 'package:tictactoe_client/repositories/PlayerRepository.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -17,16 +17,16 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _handleLogin() async {
     String email = _emailController.text;
     String password = _passwordController.text;
-    await UserRepository.signIn(email: email, password: password);
+    await playerRepository.signIn(email: email, password: password);
     setState(() {
       _isLoading = true;
     });
-    await UserRepository.signIn(email: email, password: password);
+    await playerRepository.signIn(email: email, password: password);
     setState(() {
       _isLoading = false;
     });
-    if (user.token != null) {
-      Navigator.of(context).pushNamedAndRemoveUntil("home", (route) => false);
+    if (player.token != null) {
+      Navigator.of(context).pushNamedAndRemoveUntil("router", (route) => false);
     } else {
       showAutherrorDialog(
           context, "Signin error", "Please check your credentials");

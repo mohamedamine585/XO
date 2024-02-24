@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:tictactoe_client/data/PlayXOData.dart';
-import 'package:tictactoe_client/entities/User.dart';
+import 'package:tictactoe_client/entities/Player.dart';
 import 'package:tictactoe_client/presentation/utils.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/io.dart';
@@ -19,7 +19,7 @@ class _PlayroomState extends State<Playroom> {
   Widget build(BuildContext context) {
     IOWebSocketChannel channel = IOWebSocketChannel.connect(
         Uri.parse("wss://tictactoeserver-1.onrender.com"),
-        headers: {"token": user.token});
+        headers: {"token": player.token});
 
     return Scaffold(
       appBar: AppBar(

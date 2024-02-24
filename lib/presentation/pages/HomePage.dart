@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tictactoe_client/data/PlayXOData.dart';
+import 'package:tictactoe_client/entities/Player.dart';
 import 'package:tictactoe_client/presentation/utils.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,29 +23,34 @@ class _HomePageState extends State<HomePage> {
             },
             icon: Icon(Icons.logout))
       ]),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: SCREEN_HEIGHT * 0.1,
-            ),
-            CircleAvatar(
-              radius: 70,
-            ),
-            SizedBox(
-              height: SCREEN_HEIGHT * 0.05,
-            ),
-            Container(
-              width: SCREEN_WIDTH * 0.3,
-              child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pushNamedAndRemoveUntil("playroom", (route) => false);
-                  },
-                  child: const Text("Play")),
-            ),
-            Container()
-          ],
+      body: Container(
+        margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.3),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: SCREEN_HEIGHT * 0.1,
+              ),
+              CircleAvatar(
+                radius: 70,
+              ),
+              SizedBox(
+                height: SCREEN_HEIGHT * 0.05,
+              ),
+              Container(
+                child: Text(player.playername ?? ""),
+              ),
+              Container(
+                width: SCREEN_WIDTH * 0.3,
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          "playroom", (route) => false);
+                    },
+                    child: const Text("Play")),
+              ),
+            ],
+          ),
         ),
       ),
     );
