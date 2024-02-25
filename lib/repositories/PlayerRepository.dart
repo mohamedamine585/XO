@@ -27,6 +27,17 @@ class playerRepository {
     }
   }
 
+  static setName({required String playername}) async {
+    try {
+      final setnameRes = await PlayerdataAcess.setName(playername: playername);
+      if (setnameRes?.isNotEmpty ?? false) {
+        player.playername = playername;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   static Future<void> getPlayerdata() async {
     try {
       await CachedData.init();
@@ -34,8 +45,8 @@ class playerRepository {
       if (player.token != null && player.token != "") {
         final playerData = await PlayerdataAcess.getPlayerdata();
         if (playerData != null) {
-          player.email = playerData["email"];
-          player.playername = playerData["playername"];
+          player.email = (playerData["email"] as String?) ?? "";
+          player.playername = (playerData["playername"] as String?) ?? "";
         }
       }
     } catch (e) {

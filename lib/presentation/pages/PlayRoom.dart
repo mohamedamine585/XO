@@ -84,7 +84,19 @@ class _PlayroomState extends State<Playroom> {
               );
             } else {
               return Center(
-                child: Text("no Connection"),
+                child: Column(
+                  children: [
+                    Text("no Connection"),
+                    ElevatedButton(
+                        onPressed: () async {
+                          await channel.sink.close();
+                          isconnectionclosed = false;
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              "router", (route) => false);
+                        },
+                        child: Text("Quit"))
+                  ],
+                ),
               );
             }
           } else {
@@ -102,7 +114,7 @@ class _PlayroomState extends State<Playroom> {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      await channel!.sink.close();
+                      await channel.sink.close();
                       isconnectionclosed = false;
 
                       setState(() {});

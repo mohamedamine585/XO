@@ -1,7 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tictactoe_client/entities/Player.dart';
+import 'package:tictactoe_client/presentation/dialogs/namedialog.dart';
 import 'package:tictactoe_client/presentation/utils.dart';
+
+bool _dialogShown = false;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,8 +15,35 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  BuildContext? dialogcontext;
+
+  @override
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void _showDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return NameDialog();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (!_dialogShown) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        _showDialog(context);
+      });
+      setState(() {
+        _dialogShown = true;
+      });
+    }
+    print(player.playername);
+
     return Scaffold(
       appBar: AppBar(actions: [
         IconButton(

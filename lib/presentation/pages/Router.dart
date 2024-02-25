@@ -4,6 +4,7 @@ import 'package:tictactoe_client/data/cachedData.dart';
 import 'package:tictactoe_client/entities/Player.dart';
 import 'package:tictactoe_client/presentation/pages/HomePage.dart';
 import 'package:tictactoe_client/presentation/pages/LoginPage.dart';
+import 'package:tictactoe_client/presentation/utils.dart';
 import 'package:tictactoe_client/repositories/PlayerRepository.dart';
 
 class RouterPage extends StatelessWidget {
@@ -11,6 +12,8 @@ class RouterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SCREEN_WIDTH = MediaQuery.of(context).size.width;
+    SCREEN_HEIGHT = MediaQuery.of(context).size.height;
     return FutureBuilder(
         future: playerRepository.getPlayerdata(),
         builder: (context, snapshot) {
