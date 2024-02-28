@@ -45,15 +45,16 @@ class _NameDialogState extends State<NameDialog> {
                 width: SCREEN_WIDTH * 0.7,
                 child: ElevatedButton(
                     onPressed: () async {
-                      final token = CachedData.sharedprefs?.getString("token");
+                      final prefs = await SharedPreferences.getInstance();
+                      final token = prefs.getString("token");
                       if (token != null) {
                         final response = await playerRepository.setName(
                             token: token, playername: namecontroller.text);
                         if (response?.isNotEmpty ?? false) {
-                          final prefs = await SharedPreferences.getInstance();
-                          await prefs.setBool("nameIsSet", true);
-                          Navigator.of(context).pop();
+                          Navigator.of(context).pop(namecontroller.text);
                         }
+                      } else {
+                        Navigator.of(context).pop(null);
                       }
                     },
                     child: const Text("done")))

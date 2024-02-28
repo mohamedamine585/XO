@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tictactoe_client/data/PlayerdataAccess.dart';
 import 'package:tictactoe_client/data/authDataAcess.dart';
@@ -24,7 +22,10 @@ class playerRepository {
     try {
       final token =
           await AuthDataAcess.signup(email: email, password: password);
-      await CachedData.cacheToken(token: token ?? "");
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString("token", token ?? "");
+      await prefs.setBool("nameIsSet", false);
+      return token;
     } catch (e) {
       print(e);
     }
@@ -49,9 +50,10 @@ class playerRepository {
       final token = prefs.getString("token");
       if (token != null && token != "") {
         final playerData = await PlayerdataAcess.getPlayerdata(token: token);
+        print(playerData);
         if (playerData != null) {
           return Player(playerData["name"], playerData["email"], token,
-              playerData["Playedgames"] ?? 0, playerData["Wongames"] ?? 0);
+              playerData["playedgames"] ?? 0, playerData["wongames"] ?? 0);
         }
       }
     } catch (e) {

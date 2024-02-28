@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tictactoe_client/entities/Player.dart';
+import 'package:tictactoe_client/utils.dart';
 
 import 'package:tictactoe_client/views/utils.dart';
 import 'package:web_socket_channel/io.dart';
@@ -24,7 +25,7 @@ class _PlayroomState extends State<Playroom> {
     print(token);
     if (isPlaying) {
       channel = IOWebSocketChannel.connect(
-        Uri.parse("wss://tictactoeserver-1.onrender.com"),
+        Uri.parse(GAME_URL),
         headers: {"token": "${token}"},
       );
     }

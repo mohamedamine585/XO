@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tictactoe_client/data/cachedData.dart';
 
 import 'package:tictactoe_client/views/pages/HomePage.dart';
 import 'package:tictactoe_client/views/pages/LoginPage.dart';
