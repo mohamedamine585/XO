@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tictactoe_client/data/PlayerdataAccess.dart';
 import 'package:tictactoe_client/data/authDataAcess.dart';
 import 'package:tictactoe_client/data/cachedData.dart';
@@ -9,8 +12,9 @@ class playerRepository {
       final token =
           await AuthDataAcess.signin(email: email, password: password);
 
-      player.token = token;
-      await CachedData.cacheToken(token: player.token ?? "");
+      await CachedData.cacheToken(token: token ?? "");
+
+      return token;
     } catch (e) {
       print(e);
     }
@@ -20,33 +24,34 @@ class playerRepository {
     try {
       final token =
           await AuthDataAcess.signup(email: email, password: password);
-      player.token = token;
-      await CachedData.cacheToken(token: player.token ?? "");
+      await CachedData.cacheToken(token: token ?? "");
     } catch (e) {
       print(e);
     }
   }
 
-  static setName({required String playername}) async {
+  static Future<Map<String, dynamic>?> setName(
+      {required String playername, required String token}) async {
     try {
-      final setnameRes = await PlayerdataAcess.setName(playername: playername);
+      final setnameRes =
+          await PlayerdataAcess.setName(playername: playername, token: token);
       if (setnameRes?.isNotEmpty ?? false) {
-        player.playername = playername;
+        return setnameRes;
       }
     } catch (e) {
       print(e);
     }
   }
 
-  static Future<void> getPlayerdata() async {
+  static Future<Player?> getPlayerdata() async {
     try {
-      await CachedData.init();
-      player.token = CachedData.sharedprefs?.getString("token");
-      if (player.token != null && player.token != "") {
-        final playerData = await PlayerdataAcess.getPlayerdata();
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+      if (token != null && token != "") {
+        final playerData = await PlayerdataAcess.getPlayerdata(token: token);
         if (playerData != null) {
-          player.email = (playerData["email"] as String?) ?? "";
-          player.playername = (playerData["playername"] as String?) ?? "";
+          return Player(playerData["name"], playerData["email"], token,
+              playerData["Playedgames"] ?? 0, playerData["Wongames"] ?? 0);
         }
       }
     } catch (e) {

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tictactoe_client/presentation/utils.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tictactoe_client/data/cachedData.dart';
+import 'package:tictactoe_client/entities/Player.dart';
+import 'package:tictactoe_client/views/utils.dart';
 import 'package:tictactoe_client/repositories/PlayerRepository.dart';
 
 class NameDialog extends StatefulWidget {
@@ -41,9 +45,16 @@ class _NameDialogState extends State<NameDialog> {
                 width: SCREEN_WIDTH * 0.7,
                 child: ElevatedButton(
                     onPressed: () async {
-                      await playerRepository.setName(
-                          playername: namecontroller.text);
-                      Navigator.of(context).pop();
+                      final token = CachedData.sharedprefs?.getString("token");
+                      if (token != null) {
+                        final response = await playerRepository.setName(
+                            token: token, playername: namecontroller.text);
+                        if (response?.isNotEmpty ?? false) {
+                          final prefs = await SharedPreferences.getInstance();
+                          await prefs.setBool("nameIsSet", true);
+                          Navigator.of(context).pop();
+                        }
+                      }
                     },
                     child: const Text("done")))
           ],

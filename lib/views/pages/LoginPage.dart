@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tictactoe_client/data/cachedData.dart';
 import 'package:tictactoe_client/entities/Player.dart';
-import 'package:tictactoe_client/presentation/dialogs/autherrordialog.dart';
-import 'package:tictactoe_client/presentation/utils.dart';
+import 'package:tictactoe_client/views/dialogs/autherrordialog.dart';
+import 'package:tictactoe_client/views/utils.dart';
 import 'package:tictactoe_client/repositories/PlayerRepository.dart';
 
 class LoginPage extends StatefulWidget {
@@ -17,16 +20,14 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _handleLogin() async {
     String email = _emailController.text;
     String password = _passwordController.text;
-    await playerRepository.signIn(email: email, password: password);
-    setState(() {
-      _isLoading = true;
-    });
-    await playerRepository.signIn(email: email, password: password);
-    setState(() {
-      _isLoading = false;
-    });
-    if (player.token != null) {
-      Navigator.of(context).pushNamedAndRemoveUntil("router", (route) => false);
+
+    final token =
+        await playerRepository.signIn(email: email, password: password);
+
+    (await SharedPreferences.getInstance()).setString("token", token);
+
+    if (token != null) {
+      Navigator.of(context).pushNamedAndRemoveUntil("home", (route) => false);
     } else {
       showAutherrorDialog(
           context, "Signin error", "Please check your credentials");
@@ -119,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           child: Container(
                             child: Text(
-                              "Do not have an account ?",
+                              "Don't have an account",
                               style: TextStyle(
                                   color: Color.fromARGB(255, 15, 5, 118)),
                             ),

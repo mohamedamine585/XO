@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tictactoe_client/data/cachedData.dart';
 import 'package:tictactoe_client/entities/Player.dart';
-import 'package:tictactoe_client/presentation/dialogs/autherrordialog.dart';
-import 'package:tictactoe_client/presentation/pages/PlayRoom.dart';
-import 'package:tictactoe_client/presentation/utils.dart';
+import 'package:tictactoe_client/views/dialogs/autherrordialog.dart';
+import 'package:tictactoe_client/views/pages/PlayRoom.dart';
+import 'package:tictactoe_client/views/utils.dart';
 import 'package:tictactoe_client/repositories/PlayerRepository.dart';
 
 class SignupPage extends StatefulWidget {
@@ -33,6 +34,7 @@ class _SignupPageState extends State<SignupPage> {
   Future<void> _handleSignup() async {
     String email = _emailController.text;
     String password = _passwordController.text;
+    final token = Provider.of<PlayerState>(context).player?.token;
 
     // Perform email validation
     if (!_isEmailValid(email)) {
@@ -48,7 +50,7 @@ class _SignupPageState extends State<SignupPage> {
     });
 
     await playerRepository.signUp(email: email, password: password);
-    if (player.token != null) {
+    if (token != null) {
       Navigator.of(context).pushNamedAndRemoveUntil("router", (route) => false);
     } else {
       showAutherrorDialog(context, "Signup error", "Cannot sign you up");
