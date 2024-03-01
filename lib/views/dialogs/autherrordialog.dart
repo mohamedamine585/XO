@@ -6,7 +6,10 @@ showAutherrorDialog(BuildContext context, String title, String text) {
       builder: (context) {
         return AlertDialog(
           title: Text(title),
-          content: Text(text),
+          content: Text(
+            text,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
+          ),
           actions: [
             TextButton(
                 onPressed: () {

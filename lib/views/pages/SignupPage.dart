@@ -138,10 +138,8 @@ class _SignupPageState extends State<SignupPage> {
                       .pushNamedAndRemoveUntil("signin", (route) => false);
                 },
                 child: Container(
-                  child: Text(
-                    "Already have an account ?",
-                    style: TextStyle(color: Color.fromARGB(255, 15, 5, 118)),
-                  ),
+                  child: Text("Already have an account ?",
+                      style: Theme.of(context).textTheme.bodySmall),
                 ),
               ),
             ],

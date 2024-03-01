@@ -22,9 +22,9 @@ class _LoginPageState extends State<LoginPage> {
     final token =
         await playerRepository.signIn(email: email, password: password);
 
-    (await SharedPreferences.getInstance()).setString("token", token);
-
     if (token != null) {
+      (await SharedPreferences.getInstance()).setString("token", token);
+
       Navigator.of(context).pushNamedAndRemoveUntil("home", (route) => false);
     } else {
       showAutherrorDialog(
@@ -117,11 +117,8 @@ class _LoginPageState extends State<LoginPage> {
                                 "signup", (route) => false);
                           },
                           child: Container(
-                            child: Text(
-                              "Don't have an account",
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 15, 5, 118)),
-                            ),
+                            child: Text("Don't have an account",
+                                style: Theme.of(context).textTheme.bodySmall),
                           ),
                         ),
                       ],

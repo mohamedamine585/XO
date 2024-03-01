@@ -27,11 +27,14 @@ class MyApp extends StatelessWidget {
         home: RouterPage(),
         theme: ThemeData(
             textTheme: TextTheme(
-                titleMedium:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                titleSmall: TextStyle(fontSize: 10),
-                bodyMedium:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 20))),
+          titleMedium: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          titleSmall: TextStyle(fontSize: 10),
+          bodyMedium: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          bodySmall: TextStyle(
+              color: Color.fromARGB(255, 15, 5, 118),
+              fontSize: 15,
+              fontWeight: FontWeight.normal),
+        )),
       ),
     );
   }
