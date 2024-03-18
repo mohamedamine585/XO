@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tictactoe_client/data/gamesdata.dart';
 import 'package:tictactoe_client/entities/Player.dart';
 import 'package:tictactoe_client/utils.dart';
 
@@ -18,15 +19,14 @@ class _PlayroomState extends State<Playroom> {
   bool isconnectionclosed = false;
   bool isPlaying = false;
   IOWebSocketChannel? channel;
-
+  String? roomid;
   @override
   Widget build(BuildContext context) {
     final token = context.watch<PlayerState>().player?.token;
-    print(token);
     if (isPlaying) {
       channel = IOWebSocketChannel.connect(
-        Uri.parse(GAME_URL),
-        headers: {"token": "${token}"},
+        Uri.parse("ws://$GAME_URL"),
+        headers: {"Authorization": "Bearer ${token}", "roomid": roomid},
       );
     }
     return Scaffold(
@@ -40,10 +40,8 @@ class _PlayroomState extends State<Playroom> {
                 if ((snapshot.connectionState != ConnectionState.none)) {
                   if (snapshot.hasData) {
                     Map<String, dynamic> data = json.decode(snapshot.data);
-
-                    print(data["message"]);
-                    board = (data["Grid"] != null)
-                        ? data["Grid"]
+                    board = (data["grid"] != null)
+                        ? data["grid"]
                         : [
                             "",
                             "",
@@ -55,43 +53,39 @@ class _PlayroomState extends State<Playroom> {
                             "",
                             "",
                           ];
-                    return Column(
-                      children: [
-                        Text(data["message"] ?? ""),
-                        Container(
-                          height: 400,
-                          child: GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
+                    return Container(
+                      margin: EdgeInsets.only(top: 50),
+                      child: Column(
+                        children: [
+                          Text(data["message"] ?? ""),
+                          Container(
+                            height: 400,
+                            child: GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                              ),
+                              itemCount: 9,
+                              itemBuilder: (context, index) {
+                                return buildGridCell(index, channel?.sink);
+                              },
                             ),
-                            itemCount: 9,
-                            itemBuilder: (context, index) {
-                              return buildGridCell(index, channel?.sink);
-                            },
                           ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            await channel?.sink.close();
+                          Container(
+                            width: SCREEN_WIDTH * 0.7,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                await channel?.sink.close();
 
-                            setState(() {
-                              isconnectionclosed = true;
-                            });
-                          },
-                          child: Text("Replay"),
-                        ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            await channel?.sink.close();
-
-                            setState(() {
-                              isPlaying = false;
-                            });
-                          },
-                          child: Text("end"),
-                        ),
-                      ],
+                                setState(() {
+                                  isPlaying = false;
+                                });
+                              },
+                              child: Text("End game"),
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   } else {
                     return Center(
@@ -130,7 +124,10 @@ class _PlayroomState extends State<Playroom> {
                           onPressed: () async {
                             await channel?.sink.close();
                             isconnectionclosed = false;
-
+                            if (token != null) {
+                              roomid =
+                                  await GamesData.getPlayroomid(token: token);
+                            }
                             setState(() {});
                           },
                           child: Text("Replay"),
@@ -142,15 +139,52 @@ class _PlayroomState extends State<Playroom> {
               },
             )
           : Center(
-              child: Container(
-                width: SCREEN_WIDTH * 0.7,
-                child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        isPlaying = true;
-                      });
-                    },
-                    child: const Text("Play")),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: SCREEN_HEIGHT * 0.3,
+                  ),
+                  Container(
+                    width: SCREEN_WIDTH * 0.7,
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                          elevation: MaterialStateProperty.all(10),
+                        ),
+                        onPressed: () async {
+                          if (token != null) {
+                            roomid =
+                                await GamesData.getPlayroomid(token: token);
+                          }
+
+                          setState(() {
+                            isPlaying = true;
+                          });
+                        },
+                        child: const Text("Play")),
+                  ),
+                  Container(
+                    width: SCREEN_WIDTH * 0.7,
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                            elevation: MaterialStateProperty.all(10),
+                            backgroundColor: MaterialStateProperty.all(
+                                Color.fromARGB(239, 98, 7, 121))),
+                        onPressed: () async {
+                          if (token != null) {
+                            roomid =
+                                await GamesData.getPlayroomid(token: token);
+                          }
+
+                          setState(() {
+                            isPlaying = true;
+                          });
+                        },
+                        child: const Text(
+                          "Play With A Friend",
+                          style: TextStyle(color: Colors.white),
+                        )),
+                  ),
+                ],
               ),
             ),
     );

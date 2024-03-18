@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tictactoe_client/data/cachedData.dart';
+import 'package:tictactoe_client/views/pages/AccountPage.dart';
+
 import 'package:tictactoe_client/views/pages/boradPage.dart';
-import 'package:tictactoe_client/views/dialogs/namedialog.dart';
 import 'package:tictactoe_client/views/pages/PlayRoom.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,7 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   BuildContext? dialogcontext;
-  bool isBoardPage = true;
+  int page = 0;
   @override
   @override
   void dispose() {
@@ -24,13 +23,17 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: (isBoardPage) ? BoardPage() : Playroom(),
+        body: (page == 0)
+            ? BoardPage()
+            : (page == 1)
+                ? Playroom()
+                : const AccountPage(),
         bottomNavigationBar: BottomNavigationBar(items: [
           BottomNavigationBarItem(
               icon: IconButton(
                   onPressed: () {
                     setState(() {
-                      isBoardPage = true;
+                      page = 0;
                     });
                   },
                   icon: const Icon(Icons.abc_rounded)),
@@ -41,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                   child: IconButton(
                     onPressed: () {
                       setState(() {
-                        isBoardPage = false;
+                        page = 1;
                       });
                     },
                     icon: Image.asset(
@@ -52,7 +55,13 @@ class _HomePageState extends State<HomePage> {
                   )),
               label: "playground"),
           BottomNavigationBarItem(
-              icon: IconButton(onPressed: () {}, icon: Icon(Icons.person)),
+              icon: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      page = 3;
+                    });
+                  },
+                  icon: Icon(Icons.person)),
               label: "account"),
         ]));
   }

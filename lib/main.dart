@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tictactoe_client/entities/Player.dart';
+import 'package:tictactoe_client/views/pages/AccountPage.dart';
 import 'package:tictactoe_client/views/pages/HomePage.dart';
 import 'package:tictactoe_client/views/pages/LoginPage.dart';
 import 'package:tictactoe_client/views/pages/PlayRoom.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
           "signin": (context) => LoginPage(),
           "signup": (context) => SignupPage(),
           "router": (context) => RouterPage(),
+          "aacount": (context) => AccountPage(),
         },
         home: RouterPage(),
         theme: ThemeData(

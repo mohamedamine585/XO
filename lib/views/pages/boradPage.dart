@@ -20,7 +20,7 @@ class _BoardPageState extends State<BoardPage> {
     return await showDialog(
       context: context,
       builder: (context) {
-        return NameDialog();
+        return NameDialog(context.watch<PlayerState>().player);
       },
     );
   }
@@ -84,9 +84,33 @@ class _BoardPageState extends State<BoardPage> {
                               height: SCREEN_HEIGHT * 0.05,
                             ),
                             Container(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Score",
+                                    style: TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 106, 17, 165)),
+                                  ),
+                                  Text("${snapshot.data?.score}")
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: SCREEN_HEIGHT * 0.02,
+                            ),
+                            Container(
+                              child: Text(
+                                "Game History",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
+                            ),
+                            Container(
                               margin: EdgeInsets.only(
                                   left: SCREEN_WIDTH * 0.335,
-                                  top: SCREEN_HEIGHT * 0.01),
+                                  top: SCREEN_HEIGHT * 0.005),
+                              height: SCREEN_HEIGHT * 0.06,
                               width: SCREEN_WIDTH * 0.9,
                               child: Row(
                                 children: [
@@ -99,10 +123,7 @@ class _BoardPageState extends State<BoardPage> {
                                                 .textTheme
                                                 .titleMedium
                                                 ?.fontWeight,
-                                            fontSize: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium
-                                                ?.fontSize,
+                                            fontSize: 15,
                                             color: Colors.green),
                                       ),
                                       Text(
@@ -112,25 +133,22 @@ class _BoardPageState extends State<BoardPage> {
                                                 .textTheme
                                                 .titleMedium
                                                 ?.fontWeight,
-                                            fontSize: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium
-                                                ?.fontSize,
+                                            fontSize: 15,
                                             color: Colors.green),
                                       )
                                     ],
                                   ),
                                   SizedBox(
-                                    width: SCREEN_WIDTH * 0.02,
+                                    width: SCREEN_WIDTH * 0.03,
                                   ),
                                   Container(
                                     height: SCREEN_HEIGHT * 0.05,
                                     child: VerticalDivider(
-                                      color: Color.fromARGB(255, 186, 186, 186),
+                                      color: Color.fromARGB(255, 232, 214, 214),
                                     ),
                                   ),
                                   SizedBox(
-                                    width: SCREEN_WIDTH * 0.02,
+                                    width: SCREEN_WIDTH * 0.03,
                                   ),
                                   Column(
                                     children: [
@@ -141,10 +159,7 @@ class _BoardPageState extends State<BoardPage> {
                                                 .textTheme
                                                 .titleMedium
                                                 ?.fontWeight,
-                                            fontSize: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium
-                                                ?.fontSize,
+                                            fontSize: 15,
                                             color: Colors.red),
                                       ),
                                       Text(
@@ -154,10 +169,7 @@ class _BoardPageState extends State<BoardPage> {
                                                 .textTheme
                                                 .titleMedium
                                                 ?.fontWeight,
-                                            fontSize: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium
-                                                ?.fontSize,
+                                            fontSize: 15,
                                             color: Colors.red),
                                       )
                                     ],
@@ -165,22 +177,11 @@ class _BoardPageState extends State<BoardPage> {
                                 ],
                               ),
                             ),
-                            SizedBox(
-                              height: SCREEN_HEIGHT * 0.05,
-                            ),
                             Container(
-                              child: Text(
-                                "Game History",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              width: SCREEN_WIDTH * 0.9,
-                              height: SCREEN_HEIGHT * 0.2,
+                              width: SCREEN_WIDTH * 0.98,
+                              height: SCREEN_HEIGHT * 0.28,
                               child: Card(
                                   elevation: 10,
-                                  color: Color.fromARGB(255, 241, 240, 241),
                                   child: FutureBuilder<
                                           List<Map<String, dynamic>>?>(
                                       future: GamesRepository.getGamesHistory(
@@ -197,7 +198,7 @@ class _BoardPageState extends State<BoardPage> {
                                             itemBuilder: (context, index) {
                                               return Card(
                                                 color: Color.fromARGB(
-                                                    255, 216, 194, 220),
+                                                    255, 214, 182, 244),
                                                 child: ListTile(
                                                   title: Text((snapshot0.data
                                                                   ?.elementAt(
@@ -218,30 +219,11 @@ class _BoardPageState extends State<BoardPage> {
                                                                       index)[
                                                               "creatername"] ??
                                                           "Unkonwn"),
-                                                  trailing: ((snapshot0.data?.elementAt(
-                                                                          index)[
-                                                                      "joinername"] ==
-                                                                  context
-                                                                      .watch<
-                                                                          PlayerState>()
-                                                                      .player
-                                                                      ?.playername &&
-                                                              snapshot0.data?.elementAt(
-                                                                          index)[
-                                                                      "winner"] ==
-                                                                  0) ||
-                                                          (snapshot0.data?.elementAt(
-                                                                          index)[
-                                                                      "creatername"] ==
-                                                                  context
-                                                                      .watch<
-                                                                          PlayerState>()
-                                                                      .player
-                                                                      ?.playername &&
-                                                              snapshot0.data?.elementAt(
-                                                                          index)[
-                                                                      "winner"] ==
-                                                                  1))
+                                                  trailing: (snapshot0.data
+                                                                  ?.elementAt(
+                                                                      index)[
+                                                              "winner"] ==
+                                                          1)
                                                       ? Text(
                                                           "Lost",
                                                           style: TextStyle(

@@ -7,6 +7,8 @@ import 'package:tictactoe_client/views/utils.dart';
 import 'package:tictactoe_client/repositories/PlayerRepository.dart';
 
 class NameDialog extends StatefulWidget {
+  Player? player;
+  NameDialog(this.player);
   @override
   _NameDialogState createState() => _NameDialogState();
 }
@@ -49,7 +51,8 @@ class _NameDialogState extends State<NameDialog> {
                       final token = prefs.getString("token");
                       if (token != null) {
                         final response = await playerRepository.setName(
-                            token: token, playername: namecontroller.text);
+                            player: widget.player,
+                            playername: namecontroller.text);
                         if (response?.isNotEmpty ?? false) {
                           Navigator.of(context).pop(namecontroller.text);
                         }

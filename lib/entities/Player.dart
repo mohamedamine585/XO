@@ -4,13 +4,16 @@ class Player {
   String? playername;
   String email;
   String? token;
+  int? score;
   int Wongames = 0;
   int Playedgames = 0;
+  String? photurl;
+  bool isEmailVerified = false;
 
-  Player(
-      this.playername, this.email, this.token, this.Playedgames, this.Wongames);
+  Player(this.playername, this.email, this.token, this.Playedgames,
+      this.Wongames, this.score, this.photurl, this.isEmailVerified);
   factory Player.fromemail(email) {
-    return Player(null, email, null, 0, 0);
+    return Player(null, email, null, 0, 0, 0, "", false);
   }
 }
 
@@ -19,19 +22,19 @@ class PlayerState extends ChangeNotifier {
 
   Player? get player => _player;
   void setEmail(String email) {
-    if (_player != null) {
-      _player?.email = email;
-    } else {
-      _player = Player("", email, null, 0, 0);
-    }
+    _player?.email = email;
+    notifyListeners();
   }
 
   void setToken(String token) {
-    if (_player != null) {
-      _player?.token = token;
-    } else {
-      _player = Player("", "", token, 0, 0);
-    }
+    _player?.token = token;
+
+    notifyListeners();
+  }
+
+  void setisEmailVerified(bool isemailv) {
+    _player?.isEmailVerified = isemailv;
+
     notifyListeners();
   }
 
@@ -41,11 +44,13 @@ class PlayerState extends ChangeNotifier {
   }
 
   void setName(String playername) {
-    if (_player != null) {
-      _player?.playername = playername;
-    } else {
-      _player = Player(playername, "", null, 0, 0);
-    }
+    _player?.playername = playername;
+
+    notifyListeners();
+  }
+
+  void setPhotoUrl(String photurl) {
+    _player?.photurl = photurl;
 
     notifyListeners();
   }

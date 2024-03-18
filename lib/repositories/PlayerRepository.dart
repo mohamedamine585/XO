@@ -32,10 +32,10 @@ class playerRepository {
   }
 
   static Future<Map<String, dynamic>?> setName(
-      {required String playername, required String token}) async {
+      {required String playername, required Player? player}) async {
     try {
       final setnameRes =
-          await PlayerdataAcess.setName(playername: playername, token: token);
+          await PlayerdataAcess.setName(playername: playername, player: player);
       if (setnameRes?.isNotEmpty ?? false) {
         return setnameRes;
       }
@@ -49,11 +49,18 @@ class playerRepository {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString("token");
       if (token != null && token != "") {
+        print(token);
         final playerData = await PlayerdataAcess.getPlayerdata(token: token);
-        print(playerData);
         if (playerData != null) {
-          return Player(playerData["name"], playerData["email"], token,
-              playerData["playedgames"] ?? 0, playerData["wongames"] ?? 0);
+          return Player(
+              playerData["name"],
+              playerData["email"],
+              token,
+              playerData["playedgames"] ?? 0,
+              playerData["wongames"] ?? 0,
+              playerData["score"] ?? 0,
+              playerData["photourl"],
+              playerData["isEmailVerified"] ?? false);
         }
       }
     } catch (e) {
