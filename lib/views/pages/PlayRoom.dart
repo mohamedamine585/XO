@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tictactoe_client/data/gamesdata.dart';
 import 'package:tictactoe_client/entities/Player.dart';
 import 'package:tictactoe_client/utils.dart';
@@ -20,6 +22,8 @@ class _PlayroomState extends State<Playroom> {
   bool isPlaying = false;
   IOWebSocketChannel? channel;
   String? roomid;
+  QRViewController? _controller;
+  final GlobalKey _qrKey = GlobalKey(debugLabel: 'QR');
   @override
   Widget build(BuildContext context) {
     final token = context.watch<PlayerState>().player?.token;
@@ -174,16 +178,41 @@ class _PlayroomState extends State<Playroom> {
                             roomid =
                                 await GamesData.getPlayroomid(token: token);
                           }
-
-                          setState(() {
-                            isPlaying = true;
-                          });
+                          if (roomid != null) {
+                            await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Dialog(
+                                    child: QrImageView(data: roomid ?? ""),
+                                  );
+                                });
+                          }
                         },
                         child: const Text(
                           "Play With A Friend",
                           style: TextStyle(color: Colors.white),
                         )),
                   ),
+                  SizedBox(
+                    height: SCREEN_HEIGHT * 0.05,
+                  ),
+                  Container(
+                      width: SCREEN_HEIGHT * 0.3,
+                      height: SCREEN_WIDTH * 0.3,
+                      child: IconButton(
+                        onPressed: () async {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                  child: QRView(
+                                      key: _qrKey,
+                                      onQRViewCreated: _onQRViewCreated),
+                                );
+                              });
+                        },
+                        icon: Image.asset("assets/images/qrcode.png"),
+                      ))
                 ],
               ),
             ),
@@ -212,5 +241,17 @@ class _PlayroomState extends State<Playroom> {
         ),
       ),
     );
+  }
+
+  void _onQRViewCreated(QRViewController controller) {
+    setState(() {
+      _controller = controller;
+    });
+
+    controller.scannedDataStream.listen((scanData) {
+      setState(() {
+        roomid = scanData.code;
+      });
+    });
   }
 }

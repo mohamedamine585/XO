@@ -49,6 +49,8 @@ class _LoginPageState extends State<LoginPage> {
                 height: SCREEN_HEIGHT * 0.1,
               ),
               Container(
+                height: SCREEN_HEIGHT * 0.2,
+                width: SCREEN_WIDTH * 0.3,
                 margin: (_isLoading)
                     ? EdgeInsets.only(left: SCREEN_WIDTH * 0.2)
                     : EdgeInsets.only(),
@@ -65,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                   : Column(
                       children: [
                         Container(
-                          height: SCREEN_HEIGHT * 0.07,
+                          height: SCREEN_HEIGHT * 0.08,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(color: Colors.black)),
@@ -79,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(height: 16.0),
 
                         Container(
-                          height: SCREEN_HEIGHT * 0.07,
+                          height: SCREEN_HEIGHT * 0.08,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(color: Colors.black)),

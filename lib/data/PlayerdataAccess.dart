@@ -33,4 +33,20 @@ class PlayerdataAcess {
     }
     return null;
   }
+
+  static Future<Map<String, dynamic>?> setEmail({
+    required String playername,
+    required Player? player,
+  }) async {
+    try {
+      final response = await http.put(Uri.parse("http://$GAME_URL/player"),
+          body: json.encode({"name": playername, "email": player?.email}),
+          headers: {"Authorization": "Bearer ${player?.token}"});
+      final responsebody = json.decode(response.body);
+      return responsebody;
+    } catch (e) {
+      print(e);
+    }
+    return null;
+  }
 }

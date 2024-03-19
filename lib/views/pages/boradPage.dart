@@ -16,11 +16,18 @@ class BoardPage extends StatefulWidget {
 }
 
 class _BoardPageState extends State<BoardPage> {
+  Player? player;
+  @override
+  void didChangeDependencies() {
+    player = context.watch<PlayerState>().player;
+    super.didChangeDependencies();
+  }
+
   Future<String?> _showDialog(BuildContext context) async {
     return await showDialog(
       context: context,
       builder: (context) {
-        return NameDialog(context.watch<PlayerState>().player);
+        return NameDialog(player);
       },
     );
   }
@@ -110,7 +117,7 @@ class _BoardPageState extends State<BoardPage> {
                               margin: EdgeInsets.only(
                                   left: SCREEN_WIDTH * 0.335,
                                   top: SCREEN_HEIGHT * 0.005),
-                              height: SCREEN_HEIGHT * 0.06,
+                              height: SCREEN_HEIGHT * 0.1,
                               width: SCREEN_WIDTH * 0.9,
                               child: Row(
                                 children: [

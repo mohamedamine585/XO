@@ -49,7 +49,6 @@ class playerRepository {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString("token");
       if (token != null && token != "") {
-        print(token);
         final playerData = await PlayerdataAcess.getPlayerdata(token: token);
         if (playerData != null) {
           return Player(
