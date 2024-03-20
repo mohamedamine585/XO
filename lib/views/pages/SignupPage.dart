@@ -74,10 +74,15 @@ class _SignupPageState extends State<SignupPage> {
                 height: SCREEN_HEIGHT * 0.1,
               ),
               Container(
+                height: SCREEN_HEIGHT * 0.2,
+                width: SCREEN_WIDTH * 0.3,
+                margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.05),
                 child: Image.asset("assets/images/logo.png"),
               ),
+
               Container(
-                height: SCREEN_HEIGHT * 0.07,
+                margin: EdgeInsets.only(top: SCREEN_HEIGHT * 0.1),
+                height: SCREEN_HEIGHT * 0.08,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: Colors.black)),
@@ -104,7 +109,7 @@ class _SignupPageState extends State<SignupPage> {
 
               // Password TextField
               Container(
-                height: SCREEN_HEIGHT * 0.07,
+                height: SCREEN_HEIGHT * 0.08,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: Colors.black)),

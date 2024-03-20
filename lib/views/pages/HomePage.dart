@@ -28,41 +28,46 @@ class _HomePageState extends State<HomePage> {
             : (page == 1)
                 ? Playroom()
                 : const AccountPage(),
-        bottomNavigationBar: BottomNavigationBar(items: [
-          BottomNavigationBarItem(
-              icon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      page = 0;
-                    });
-                  },
-                  icon: const Icon(Icons.abc_rounded)),
-              label: "home"),
-          BottomNavigationBarItem(
-              icon: Container(
-                  width: 80,
-                  child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        page = 1;
-                      });
-                    },
-                    icon: Image.asset(
-                      "assets/images/logo.png",
-                      width: 20,
-                      fit: BoxFit.fitWidth,
-                    ),
-                  )),
-              label: "playground"),
-          BottomNavigationBarItem(
-              icon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      page = 3;
-                    });
-                  },
-                  icon: Icon(Icons.person)),
-              label: "account"),
-        ]));
+        bottomNavigationBar: BottomNavigationBar(
+            selectedLabelStyle: TextStyle(color: Colors.grey),
+            items: [
+              BottomNavigationBarItem(
+                  icon: IconButton(
+                      color: (page == 0) ? Colors.purple : null,
+                      onPressed: () {
+                        setState(() {
+                          page = 0;
+                        });
+                      },
+                      icon: const Icon(Icons.book)),
+                  label: "home"),
+              BottomNavigationBarItem(
+                  icon: Container(
+                      width: 80,
+                      child: IconButton(
+                          color: (page == 1) ? Colors.purple : null,
+                          onPressed: () {
+                            setState(() {
+                              page = 1;
+                            });
+                          },
+                          icon: Text(
+                            "XO",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: (page == 1) ? Colors.purple : null),
+                          ))),
+                  label: "playground"),
+              BottomNavigationBarItem(
+                  icon: IconButton(
+                      color: (page == 2) ? Colors.purple : null,
+                      onPressed: () {
+                        setState(() {
+                          page = 2;
+                        });
+                      },
+                      icon: Icon(Icons.person)),
+                  label: "account"),
+            ]));
   }
 }

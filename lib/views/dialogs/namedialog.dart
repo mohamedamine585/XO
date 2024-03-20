@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tictactoe_client/data/cachedData.dart';
 import 'package:tictactoe_client/entities/Player.dart';
 import 'package:tictactoe_client/views/utils.dart';
 import 'package:tictactoe_client/repositories/PlayerRepository.dart';
@@ -28,7 +26,7 @@ class _NameDialogState extends State<NameDialog> {
               height: SCREEN_HEIGHT * 0.05,
             ),
             Container(
-              height: SCREEN_HEIGHT * 0.07,
+              height: SCREEN_HEIGHT * 0.1,
               width: SCREEN_WIDTH * 0.75,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),

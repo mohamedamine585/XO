@@ -4,9 +4,13 @@ import 'package:http/http.dart';
 import 'package:tictactoe_client/utils.dart';
 
 class GamesData {
-  static Future<String?> getPlayroomid({required String token}) async {
+  static Future<String?> getPlayroomid(
+      {required String token, required bool withAFriend}) async {
     try {
-      final headers = {'authorization': "Bearer $token"};
+      final headers = {
+        'authorization': "Bearer $token",
+        'mode': withAFriend ? 'friend' : ''
+      };
       final response =
           await get(Uri.parse("http://$GAME_URL"), headers: headers);
       if (response.statusCode == 200) {

@@ -67,7 +67,7 @@ class _BoardPageState extends State<BoardPage> {
                         child: Column(
                           children: [
                             SizedBox(
-                              height: SCREEN_HEIGHT * 0.05,
+                              height: SCREEN_HEIGHT * 0.005,
                             ),
                             CircleAvatar(
                               foregroundImage:
@@ -186,7 +186,7 @@ class _BoardPageState extends State<BoardPage> {
                             ),
                             Container(
                               width: SCREEN_WIDTH * 0.98,
-                              height: SCREEN_HEIGHT * 0.28,
+                              height: SCREEN_HEIGHT * 0.4,
                               child: Card(
                                   elevation: 10,
                                   child: FutureBuilder<

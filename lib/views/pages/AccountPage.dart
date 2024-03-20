@@ -146,7 +146,7 @@ class _AccountPageState extends State<AccountPage> {
                   controller: namecontroller,
                   onChanged: (value) {
                     setState(() {
-                      namechanged = player?.email != value;
+                      namechanged = player?.playername != value;
                     });
                   },
                 )),

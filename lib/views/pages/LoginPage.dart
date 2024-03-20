@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                 width: SCREEN_WIDTH * 0.3,
                 margin: (_isLoading)
                     ? EdgeInsets.only(left: SCREEN_WIDTH * 0.2)
-                    : EdgeInsets.only(),
+                    : EdgeInsets.only(bottom: SCREEN_HEIGHT * 0.1),
                 child: Image.asset("assets/images/logo.png"),
               ),
               (_isLoading)
@@ -61,8 +61,8 @@ class _LoginPageState extends State<LoginPage> {
                       margin: (_isLoading)
                           ? EdgeInsets.only(
                               left: SCREEN_WIDTH * 0.2,
-                              top: SCREEN_HEIGHT * 0.1)
-                          : EdgeInsets.only(),
+                              top: SCREEN_HEIGHT * 0.3)
+                          : EdgeInsets.only(top: SCREEN_HEIGHT * 0.3),
                       child: CircularProgressIndicator())
                   : Column(
                       children: [
