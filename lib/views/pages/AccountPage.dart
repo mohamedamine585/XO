@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:tictactoe_client/entities/Player.dart';
 import 'package:tictactoe_client/repositories/PlayerRepository.dart';
+import 'package:tictactoe_client/views/dialogs/generaldialgo.dart';
 import 'package:tictactoe_client/views/utils.dart';
 
 class AccountPage extends StatefulWidget {
@@ -56,7 +61,28 @@ class _AccountPageState extends State<AccountPage> {
                           Icons.camera,
                           color: Colors.white,
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          final image = await ImagePicker()
+                              .pickImage(source: ImageSource.gallery);
+                          if (image != null) {
+                            final response = await showAdaptiveDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) => generaldialog(
+                                    context,
+                                    "Confirm Image",
+                                    "Do you confirm using this photo as a profile photo",
+                                    "yes",
+                                    "no",
+                                    CircleAvatar(
+                                      foregroundImage:
+                                          Image.file(File(image.path)).image,
+                                    )));
+                            if (response != null && response) {
+                              print("save");
+                            }
+                          }
+                        },
                         backgroundColor: Color.fromARGB(255, 112, 3, 163),
                       )))
             ],
