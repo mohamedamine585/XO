@@ -37,7 +37,7 @@ class _PlayroomState extends State<Playroom> {
 
     if (isPlaying && roomid != null) {
       channel = IOWebSocketChannel.connect(
-        Uri.parse("ws://$GAME_URL"),
+        Uri.parse("wss://$GAME_URL"),
         headers: {"Authorization": "Bearer ${token}", "roomid": roomid},
       );
       roomid = null;

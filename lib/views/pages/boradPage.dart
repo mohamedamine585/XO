@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tictactoe_client/repositories/GamesRepository.dart';
 import 'package:tictactoe_client/repositories/PlayerRepository.dart';
+import 'package:tictactoe_client/views/Widgets/ImageWidget.dart';
 import 'package:tictactoe_client/views/dialogs/namedialog.dart';
 import 'package:tictactoe_client/views/utils.dart';
 
@@ -69,11 +70,7 @@ class _BoardPageState extends State<BoardPage> {
                             SizedBox(
                               height: SCREEN_HEIGHT * 0.005,
                             ),
-                            CircleAvatar(
-                              foregroundImage:
-                                  AssetImage("assets/images/man.png"),
-                              radius: 70,
-                            ),
+                            imageWidget(player),
                             SizedBox(
                               height: SCREEN_HEIGHT * 0.02,
                             ),

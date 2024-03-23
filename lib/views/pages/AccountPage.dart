@@ -2,12 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:tictactoe_client/entities/Player.dart';
+import 'package:tictactoe_client/repositories/MetaDataRepository.dart';
 import 'package:tictactoe_client/repositories/PlayerRepository.dart';
+import 'package:tictactoe_client/views/Widgets/ImageWidget.dart';
 import 'package:tictactoe_client/views/dialogs/generaldialgo.dart';
 import 'package:tictactoe_client/views/utils.dart';
 
@@ -33,8 +34,6 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    final photourl = player?.photurl;
-
     final isEmailVerified = player?.isEmailVerified;
     return Scaffold(
         body: Center(
@@ -44,12 +43,7 @@ class _AccountPageState extends State<AccountPage> {
           margin: EdgeInsets.only(top: SCREEN_HEIGHT * 0.1),
           child: Stack(
             children: [
-              CircleAvatar(
-                foregroundImage: (photourl != null)
-                    ? Image.network(photourl).image
-                    : const AssetImage("assets/images/man.png"),
-                radius: 70,
-              ),
+              imageWidget(player),
               Positioned(
                   top: SCREEN_HEIGHT * 0.145,
                   left: SCREEN_WIDTH * 0.26,
@@ -79,7 +73,10 @@ class _AccountPageState extends State<AccountPage> {
                                           Image.file(File(image.path)).image,
                                     )));
                             if (response != null && response) {
-                              print("save");
+                              await MetaDataRepository.uploadImage(
+                                  image: File(image.path),
+                                  token: player?.token ?? "");
+                              setState(() {});
                             }
                           }
                         },

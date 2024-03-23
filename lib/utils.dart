@@ -1,2 +1,2 @@
-const URL = "http://192.168.1.14:8081";
-const GAME_URL = "192.168.1.14:8080";
+const URL = "https://authservice-s4ww.onrender.com";
+const GAME_URL = "tictactoeserver-sdsf.onrender.com";
