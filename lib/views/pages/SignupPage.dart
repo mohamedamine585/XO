@@ -20,6 +20,7 @@ class _SignupPageState extends State<SignupPage> {
     r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$',
   );
 
+  bool isLoading = false;
   // Validation error message
   String? _emailErrorMessage;
 
@@ -44,10 +45,14 @@ class _SignupPageState extends State<SignupPage> {
     // Clear any previous error message
     setState(() {
       _emailErrorMessage = null;
+      isLoading = true;
     });
 
     final token =
         await playerRepository.signUp(email: email, password: password);
+    setState(() {
+      isLoading = false;
+    });
     if (token != null) {
       Navigator.of(context).pushNamedAndRemoveUntil("router", (route) => false);
     } else {
@@ -68,87 +73,95 @@ class _SignupPageState extends State<SignupPage> {
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: SCREEN_HEIGHT * 0.1,
-              ),
-              Container(
-                height: SCREEN_HEIGHT * 0.2,
-                width: SCREEN_WIDTH * 0.3,
-                margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.05),
-                child: Image.asset("assets/images/logo.png"),
-              ),
+          child: (!isLoading)
+              ? Column(
+                  children: [
+                    SizedBox(
+                      height: SCREEN_HEIGHT * 0.1,
+                    ),
+                    Container(
+                      height: SCREEN_HEIGHT * 0.2,
+                      width: SCREEN_WIDTH * 0.3,
+                      margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.05),
+                      child: Image.asset("assets/images/logo.png"),
+                    ),
 
-              Container(
-                margin: EdgeInsets.only(top: SCREEN_HEIGHT * 0.1),
-                height: SCREEN_HEIGHT * 0.08,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.black)),
-                // Email TextField with error handling
-                child: TextField(
-                  onChanged: (text) {
-                    if (!_isEmailValid(text)) {
-                      setState(() {
-                        emailbred = true;
-                      });
-                    }
-                  },
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: emailbred ? Colors.red : Colors.grey)),
-                    labelText: 'Email',
-                    errorText: _emailErrorMessage,
+                    Container(
+                      margin: EdgeInsets.only(top: SCREEN_HEIGHT * 0.1),
+                      height: SCREEN_HEIGHT * 0.08,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.black)),
+                      // Email TextField with error handling
+                      child: TextField(
+                        onChanged: (text) {
+                          if (!_isEmailValid(text)) {
+                            setState(() {
+                              emailbred = true;
+                            });
+                          }
+                        },
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: emailbred ? Colors.red : Colors.grey)),
+                          labelText: 'Email',
+                          errorText: _emailErrorMessage,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+
+                    // Password TextField
+                    Container(
+                      height: SCREEN_HEIGHT * 0.08,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.black)),
+                      child: TextField(
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                        ),
+                        obscureText: true, // Hide the entered text
+                      ),
+                    ),
+                    SizedBox(height: 32.0),
+
+                    // Login Button
+                    ElevatedButton(
+                      style: ButtonStyle(
+                          fixedSize: MaterialStateProperty.all(
+                              Size(SCREEN_WIDTH * 0.5, SCREEN_HEIGHT * 0.05))),
+                      onPressed: _handleSignup,
+                      child: Text(
+                        "Let's play",
+                        style:
+                            TextStyle(color: Color.fromARGB(255, 15, 5, 118)),
+                      ),
+                    ),
+                    SizedBox(
+                      height: SCREEN_HEIGHT * 0.01,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            "signin", (route) => false);
+                      },
+                      child: Container(
+                        child: Text("Already have an account ?",
+                            style: Theme.of(context).textTheme.bodySmall),
+                      ),
+                    ),
+                  ],
+                )
+              : Container(
+                  margin: EdgeInsets.only(top: SCREEN_HEIGHT * 0.3),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
                   ),
                 ),
-              ),
-              SizedBox(height: 16.0),
-
-              // Password TextField
-              Container(
-                height: SCREEN_HEIGHT * 0.08,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.black)),
-                child: TextField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                  ),
-                  obscureText: true, // Hide the entered text
-                ),
-              ),
-              SizedBox(height: 32.0),
-
-              // Login Button
-              ElevatedButton(
-                style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.all(
-                        Size(SCREEN_WIDTH * 0.5, SCREEN_HEIGHT * 0.05))),
-                onPressed: _handleSignup,
-                child: Text(
-                  "Let's play",
-                  style: TextStyle(color: Color.fromARGB(255, 15, 5, 118)),
-                ),
-              ),
-              SizedBox(
-                height: SCREEN_HEIGHT * 0.01,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil("signin", (route) => false);
-                },
-                child: Container(
-                  child: Text("Already have an account ?",
-                      style: Theme.of(context).textTheme.bodySmall),
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );

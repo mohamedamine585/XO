@@ -35,10 +35,10 @@ class _PlayroomState extends State<Playroom> {
   Widget build(BuildContext context) {
     final token = context.watch<PlayerState>().player?.token;
 
-    if (isPlaying && roomid != null) {
+    if (isPlaying && roomid != null && token != null) {
       channel = IOWebSocketChannel.connect(
         Uri.parse("wss://$GAME_URL"),
-        headers: {"Authorization": "Bearer ${token}", "roomid": roomid},
+        headers: {"Authorization": "Bearer $token", "roomid": roomid},
       );
       roomid = null;
     }

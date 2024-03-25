@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tictactoe_client/entities/Player.dart';
 
 import 'package:tictactoe_client/views/pages/HomePage.dart';
 import 'package:tictactoe_client/views/pages/LoginPage.dart';
@@ -20,6 +22,7 @@ class RouterPage extends StatelessWidget {
           final token = snapshot.data?.getString("token");
 
           if (token != null && token != "") {
+            context.read<PlayerState>().setToken(token);
             return const HomePage();
           } else {
             return LoginPage();

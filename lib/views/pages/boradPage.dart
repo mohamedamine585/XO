@@ -70,7 +70,7 @@ class _BoardPageState extends State<BoardPage> {
                             SizedBox(
                               height: SCREEN_HEIGHT * 0.005,
                             ),
-                            imageWidget(player),
+                            imageWidget(player, context),
                             SizedBox(
                               height: SCREEN_HEIGHT * 0.02,
                             ),

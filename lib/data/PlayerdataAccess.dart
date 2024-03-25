@@ -10,8 +10,10 @@ class PlayerdataAcess {
     try {
       final response = await http.get(Uri.parse("https://$GAME_URL/player"),
           headers: {"Authorization": "Bearer $token"});
-      final responsebody = json.decode(response.body);
-      return responsebody;
+      if (response.statusCode == 200) {
+        final responsebody = json.decode(response.body);
+        return responsebody;
+      }
     } catch (e) {
       print(e);
     }

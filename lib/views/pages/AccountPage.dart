@@ -9,6 +9,7 @@ import 'package:tictactoe_client/entities/Player.dart';
 import 'package:tictactoe_client/repositories/MetaDataRepository.dart';
 import 'package:tictactoe_client/repositories/PlayerRepository.dart';
 import 'package:tictactoe_client/views/Widgets/ImageWidget.dart';
+import 'package:tictactoe_client/views/dialogs/alertdialog.dart';
 import 'package:tictactoe_client/views/dialogs/generaldialgo.dart';
 import 'package:tictactoe_client/views/utils.dart';
 
@@ -43,13 +44,13 @@ class _AccountPageState extends State<AccountPage> {
           margin: EdgeInsets.only(top: SCREEN_HEIGHT * 0.1),
           child: Stack(
             children: [
-              imageWidget(player),
+              imageWidget(player, context),
               Positioned(
-                  top: SCREEN_HEIGHT * 0.145,
-                  left: SCREEN_WIDTH * 0.26,
+                  top: SCREEN_HEIGHT * 0.12,
+                  left: SCREEN_WIDTH * 0.25,
                   child: Container(
-                      height: SCREEN_HEIGHT * 0.03,
-                      width: SCREEN_WIDTH * 0.07,
+                      height: SCREEN_HEIGHT * 0.05,
+                      width: SCREEN_WIDTH * 0.1,
                       child: FloatingActionButton(
                         child: Icon(
                           Icons.camera,
@@ -73,9 +74,15 @@ class _AccountPageState extends State<AccountPage> {
                                           Image.file(File(image.path)).image,
                                     )));
                             if (response != null && response) {
-                              await MetaDataRepository.uploadImage(
-                                  image: File(image.path),
-                                  token: player?.token ?? "");
+                              final uploaded =
+                                  await MetaDataRepository.uploadImage(
+                                      image: File(image.path),
+                                      token: player?.token ?? "");
+                              (uploaded ?? false)
+                                  ? context.read<PlayerState>().setPhoto(
+                                      await File(image.path).readAsBytes())
+                                  : null;
+
                               setState(() {});
                             }
                           }
@@ -209,7 +216,13 @@ class _AccountPageState extends State<AccountPage> {
           height: SCREEN_HEIGHT * 0.06,
           width: SCREEN_WIDTH,
           child: OutlinedButton(
-            onPressed: () {},
+            onPressed: () async {
+              await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return alertdialog(context);
+                  });
+            },
             child: Text(
               "Delete Account",
               style: TextStyle(color: Colors.white),

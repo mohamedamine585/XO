@@ -52,8 +52,8 @@ class playerRepository {
         final playerData = await PlayerdataAcess.getPlayerdata(token: token);
         if (playerData != null) {
           return Player(
-              playerData["name"],
-              playerData["email"],
+              playerData["name"] ?? "",
+              playerData["email"] ?? "",
               token,
               playerData["playedgames"] ?? 0,
               playerData["wongames"] ?? 0,
