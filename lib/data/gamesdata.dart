@@ -39,5 +39,6 @@ class GamesData {
     } catch (e) {
       print(e);
     }
+    return null;
   }
 }

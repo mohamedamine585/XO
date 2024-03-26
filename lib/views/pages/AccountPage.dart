@@ -44,7 +44,7 @@ class _AccountPageState extends State<AccountPage> {
           margin: EdgeInsets.only(top: SCREEN_HEIGHT * 0.1),
           child: Stack(
             children: [
-              imageWidget(player, context),
+              imageWidget(player, context, 70),
               Positioned(
                   top: SCREEN_HEIGHT * 0.12,
                   left: SCREEN_WIDTH * 0.25,

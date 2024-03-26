@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:typed_data';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +9,8 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tictactoe_client/data/gamesdata.dart';
 import 'package:tictactoe_client/entities/Player.dart';
 import 'package:tictactoe_client/utils.dart';
+import 'package:tictactoe_client/views/Widgets/ImageWidget.dart';
+import 'package:tictactoe_client/views/Widgets/opponentinfowidget.dart';
 
 import 'package:tictactoe_client/views/utils.dart';
 import 'package:web_socket_channel/io.dart';
@@ -24,7 +28,9 @@ class _PlayroomState extends State<Playroom> {
   IOWebSocketChannel? channel;
   String? roomid;
   QRViewController? _controller;
+  String? opponentid;
   final GlobalKey _qrKey = GlobalKey(debugLabel: 'QR');
+
   @override
   void dispose() async {
     await channel?.sink.close();
@@ -32,8 +38,15 @@ class _PlayroomState extends State<Playroom> {
   }
 
   @override
+  void initState() {
+    existingimage = null;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final token = context.watch<PlayerState>().player?.token;
+    final player = context.watch<PlayerState>().player;
+    final token = player?.token;
 
     if (isPlaying && roomid != null && token != null) {
       channel = IOWebSocketChannel.connect(
@@ -51,6 +64,10 @@ class _PlayroomState extends State<Playroom> {
                   if ((snapshot.connectionState != ConnectionState.none)) {
                     if (snapshot.hasData) {
                       Map<String, dynamic> data = json.decode(snapshot.data);
+                      opponentid = (data["oppoenentid"] != null)
+                          ? data["oppoenentid"]
+                          : opponentid;
+
                       board = (data["grid"] != null)
                           ? data["grid"]
                           : [
@@ -68,13 +85,51 @@ class _PlayroomState extends State<Playroom> {
                         margin: EdgeInsets.only(top: 50),
                         child: Column(
                           children: [
-                            SizedBox(height: SCREEN_HEIGHT * 0.1),
+                            Center(
+                              child: Container(
+                                  width: SCREEN_WIDTH * 0.8,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        child: Column(children: [
+                                          imageWidget(player, context, 30),
+                                          Text(player?.playername ?? "Unknown")
+                                        ]),
+                                      ),
+                                      Container(
+                                        width: SCREEN_WIDTH * 0.3,
+                                        child: Row(
+                                          children: [
+                                            SizedBox(
+                                              width: SCREEN_WIDTH * 0.15,
+                                            ),
+                                            const Text("VS."),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Column(children: [
+                                          imageWidgetFromBytes(
+                                            opponentid ?? "",
+                                            player?.token ?? "",
+                                            30,
+                                          ),
+                                          opponentinfoWidget(
+                                              opponentid, player?.token ?? "")
+                                        ]),
+                                      ),
+                                    ],
+                                  )),
+                            ),
+                            SizedBox(height: SCREEN_HEIGHT * 0.05),
                             Text(data["message"] ?? ""),
                             Container(
                               height: SCREEN_HEIGHT * 0.55,
                               child: GridView.builder(
                                 gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 3,
                                 ),
                                 itemCount: 9,
@@ -93,8 +148,10 @@ class _PlayroomState extends State<Playroom> {
                                     backgroundColor: Colors.purple),
                                 onPressed: () async {
                                   await channel?.sink.close();
+                                  existingimage = null;
 
                                   setState(() {
+                                    opponentid = null;
                                     isPlaying = false;
                                   });
                                 },

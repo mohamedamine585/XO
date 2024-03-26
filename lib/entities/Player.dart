@@ -25,7 +25,7 @@ class PlayerState extends ChangeNotifier {
   Player? get player => _player;
   void setEmail(String email) {
     if (_player == null) {
-      _player = Player("", email, "", 0, 0, null, null, false);
+      _player = Player(null, email, "", 0, 0, null, null, false);
     } else {
       _player?.email = email;
     }
@@ -34,7 +34,7 @@ class PlayerState extends ChangeNotifier {
 
   void setToken(String token) {
     if (_player == null) {
-      _player = Player("", "", token, 0, 0, null, null, false);
+      _player = Player(null, "", token, 0, 0, null, null, false);
     } else {
       _player?.token = token;
     }
@@ -44,7 +44,7 @@ class PlayerState extends ChangeNotifier {
 
   void setisEmailVerified(bool isemailv) {
     if (_player == null) {
-      _player = Player("", "", "", 0, 0, null, Uint8List(8), isemailv);
+      _player = Player(null, "", "", 0, 0, null, Uint8List(8), isemailv);
     } else {
       _player?.isEmailVerified = isemailv;
     }

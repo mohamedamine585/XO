@@ -26,7 +26,7 @@ class _NameDialogState extends State<NameDialog> {
               height: SCREEN_HEIGHT * 0.05,
             ),
             Container(
-              height: SCREEN_HEIGHT * 0.1,
+              height: SCREEN_HEIGHT * 0.085,
               width: SCREEN_WIDTH * 0.75,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -41,24 +41,54 @@ class _NameDialogState extends State<NameDialog> {
             SizedBox(
               height: SCREEN_HEIGHT * 0.05,
             ),
-            Container(
-                width: SCREEN_WIDTH * 0.7,
-                child: ElevatedButton(
-                    onPressed: () async {
-                      final prefs = await SharedPreferences.getInstance();
-                      final token = prefs.getString("token");
-                      if (token != null) {
-                        final response = await playerRepository.setName(
-                            player: widget.player,
-                            playername: namecontroller.text);
-                        if (response?.isNotEmpty ?? false) {
-                          Navigator.of(context).pop(namecontroller.text);
-                        }
-                      } else {
-                        Navigator.of(context).pop(null);
-                      }
-                    },
-                    child: const Text("done")))
+            Row(
+              children: [
+                Container(
+                    margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.07),
+                    width: SCREEN_WIDTH * 0.3,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 170, 49, 235)),
+                        onPressed: () async {
+                          final prefs = await SharedPreferences.getInstance();
+                          final token = prefs.getString("token");
+                          if (token != null) {
+                            final response = await playerRepository.setName(
+                                player: widget.player,
+                                playername: namecontroller.text);
+                            if (response?.isNotEmpty ?? false) {
+                              Navigator.of(context).pop(namecontroller.text);
+                            }
+                          } else {
+                            Navigator.of(context).pop(null);
+                          }
+                        },
+                        child: const Text(
+                          "done",
+                          style: TextStyle(color: Colors.white),
+                        ))),
+                SizedBox(
+                  width: SCREEN_WIDTH * 0.05,
+                ),
+                Container(
+                    width: SCREEN_WIDTH * 0.3,
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          final prefs = await SharedPreferences.getInstance();
+                          final token = prefs.getString("token");
+                          if (token != null) {
+                            final response = await playerRepository.setName(
+                                player: widget.player, playername: "");
+                            if (response?.isNotEmpty ?? false) {
+                              Navigator.of(context).pop(namecontroller.text);
+                            }
+                          } else {
+                            Navigator.of(context).pop(null);
+                          }
+                        },
+                        child: const Text("Never Ask")))
+              ],
+            ),
           ],
         ),
       ),

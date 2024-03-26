@@ -19,8 +19,15 @@ class _LoginPageState extends State<LoginPage> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
+    setState(() {
+      _isLoading = true;
+    });
+
     final token =
         await playerRepository.signIn(email: email, password: password);
+    setState(() {
+      _isLoading = false;
+    });
 
     if (token != null) {
       (await SharedPreferences.getInstance()).setString("token", token);
@@ -40,31 +47,25 @@ class _LoginPageState extends State<LoginPage> {
     SCREEN_WIDTH = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: SCREEN_HEIGHT * 0.1,
-              ),
-              Container(
-                height: SCREEN_HEIGHT * 0.2,
-                width: SCREEN_WIDTH * 0.3,
-                margin: (_isLoading)
-                    ? EdgeInsets.only(left: SCREEN_WIDTH * 0.2)
-                    : EdgeInsets.only(bottom: SCREEN_HEIGHT * 0.1),
-                child: Image.asset("assets/images/logo.png"),
-              ),
-              (_isLoading)
-                  ? Container(
+      body: (_isLoading)
+          ? Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: SCREEN_HEIGHT * 0.1,
+                    ),
+                    Container(
+                      height: SCREEN_HEIGHT * 0.2,
+                      width: SCREEN_WIDTH * 0.3,
                       margin: (_isLoading)
-                          ? EdgeInsets.only(
-                              left: SCREEN_WIDTH * 0.2,
-                              top: SCREEN_HEIGHT * 0.3)
-                          : EdgeInsets.only(top: SCREEN_HEIGHT * 0.3),
-                      child: CircularProgressIndicator())
-                  : Column(
+                          ? EdgeInsets.only(left: SCREEN_WIDTH * 0.2)
+                          : EdgeInsets.only(bottom: SCREEN_HEIGHT * 0.1),
+                      child: Image.asset("assets/images/logo.png"),
+                    ),
+                    Column(
                       children: [
                         Container(
                           height: SCREEN_HEIGHT * 0.08,
@@ -125,10 +126,10 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ],
                     ),
-            ],
-          ),
-        ),
-      ),
+                  ],
+                ),
+              ),
+            ),
     );
   }
 }

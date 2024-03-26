@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tictactoe_client/entities/Player.dart';
+
 import 'package:tictactoe_client/views/dialogs/autherrordialog.dart';
 import 'package:tictactoe_client/views/utils.dart';
 import 'package:tictactoe_client/repositories/PlayerRepository.dart';

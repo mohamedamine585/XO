@@ -66,4 +66,27 @@ class playerRepository {
       print(e);
     }
   }
+
+  static Future<Player?> getPlayerById({required String id}) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+      if (token != null && token != "") {
+        final playerData = await PlayerdataAcess.getPlayerdata(token: token);
+        if (playerData != null) {
+          return Player(
+              playerData["name"] ?? "",
+              playerData["email"] ?? "",
+              token,
+              playerData["playedgames"] ?? 0,
+              playerData["wongames"] ?? 0,
+              playerData["score"] ?? 0,
+              playerData["photourl"],
+              playerData["isEmailVerified"] ?? false);
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 }

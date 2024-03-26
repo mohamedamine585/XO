@@ -70,7 +70,7 @@ class _BoardPageState extends State<BoardPage> {
                             SizedBox(
                               height: SCREEN_HEIGHT * 0.005,
                             ),
-                            imageWidget(player, context),
+                            imageWidget(player, context, 70),
                             SizedBox(
                               height: SCREEN_HEIGHT * 0.02,
                             ),
@@ -183,7 +183,7 @@ class _BoardPageState extends State<BoardPage> {
                             ),
                             Container(
                               width: SCREEN_WIDTH * 0.98,
-                              height: SCREEN_HEIGHT * 0.4,
+                              height: SCREEN_HEIGHT * 0.26,
                               child: Card(
                                   elevation: 10,
                                   child: FutureBuilder<
@@ -197,60 +197,72 @@ class _BoardPageState extends State<BoardPage> {
                                       builder: (context, snapshot0) {
                                         if (snapshot0.connectionState ==
                                             ConnectionState.done) {
-                                          return ListView.builder(
-                                            itemCount: snapshot0.data?.length,
-                                            itemBuilder: (context, index) {
-                                              return Card(
-                                                color: Color.fromARGB(
-                                                    255, 214, 182, 244),
-                                                child: ListTile(
-                                                  title: Text((snapshot0.data
-                                                                  ?.elementAt(
-                                                                      index)[
-                                                              "creatorname"] ==
-                                                          context
-                                                              .watch<
-                                                                  PlayerState>()
-                                                              .player
-                                                              ?.playername)
-                                                      ? snapshot0.data
-                                                                  ?.elementAt(
-                                                                      index)[
-                                                              "joinername"] ??
-                                                          "Unkonwn"
-                                                      : snapshot0.data
-                                                                  ?.elementAt(
-                                                                      index)[
-                                                              "creatername"] ??
-                                                          "Unkonwn"),
-                                                  trailing: (snapshot0.data
-                                                                  ?.elementAt(
-                                                                      index)[
-                                                              "winner"] ==
-                                                          1)
-                                                      ? Text(
-                                                          "Lost",
-                                                          style: TextStyle(
-                                                              color: Colors.red,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 15),
-                                                        )
-                                                      : Text(
-                                                          "Won",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.green,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 15),
-                                                        ),
-                                                ),
-                                              );
-                                            },
-                                          );
+                                          if (snapshot0.data != null &&
+                                              snapshot0.data != []) {
+                                            return ListView.builder(
+                                              itemCount: snapshot0.data?.length,
+                                              itemBuilder: (context, index) {
+                                                return Card(
+                                                  color: Color.fromARGB(
+                                                      255, 214, 182, 244),
+                                                  child: ListTile(
+                                                    title: Text((snapshot0.data
+                                                                    ?.elementAt(
+                                                                        index)[
+                                                                "creatorname"] ==
+                                                            context
+                                                                .watch<
+                                                                    PlayerState>()
+                                                                .player
+                                                                ?.playername)
+                                                        ? snapshot0.data
+                                                                    ?.elementAt(
+                                                                        index)[
+                                                                "joinername"] ??
+                                                            "Unkonwn"
+                                                        : snapshot0.data
+                                                                    ?.elementAt(
+                                                                        index)[
+                                                                "creatername"] ??
+                                                            "Unkonwn"),
+                                                    trailing: (snapshot0.data
+                                                                    ?.elementAt(
+                                                                        index)[
+                                                                "winner"] ==
+                                                            1)
+                                                        ? Text(
+                                                            "Lost",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.red,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 15),
+                                                          )
+                                                        : Text(
+                                                            "Won",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .green,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 15),
+                                                          ),
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          } else {
+                                            return const Center(
+                                              child: Text(
+                                                "No games played yet",
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                            );
+                                          }
                                         }
                                         return Container(
                                             height: SCREEN_HEIGHT * 0.01,
