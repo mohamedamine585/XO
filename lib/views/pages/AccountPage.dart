@@ -9,6 +9,7 @@ import 'package:tictactoe_client/entities/Player.dart';
 import 'package:tictactoe_client/repositories/MetaDataRepository.dart';
 import 'package:tictactoe_client/repositories/PlayerRepository.dart';
 import 'package:tictactoe_client/views/Widgets/ImageWidget.dart';
+import 'package:tictactoe_client/views/Widgets/verifyEmailButton.dart';
 import 'package:tictactoe_client/views/dialogs/alertdialog.dart';
 import 'package:tictactoe_client/views/dialogs/generaldialgo.dart';
 import 'package:tictactoe_client/views/utils.dart';
@@ -102,23 +103,7 @@ class _AccountPageState extends State<AccountPage> {
         SizedBox(
           height: SCREEN_HEIGHT * 0.1,
         ),
-        (isEmailVerified == false)
-            ? Container(
-                height: SCREEN_HEIGHT * 0.06,
-                width: SCREEN_WIDTH,
-                child: OutlinedButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Verify Email",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 143, 25, 227),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5))),
-                ),
-              )
-            : const SizedBox(),
+        verifyemailWidget,
         SizedBox(
           height: SCREEN_HEIGHT * 0.05,
         ),
@@ -210,11 +195,57 @@ class _AccountPageState extends State<AccountPage> {
           ],
         ),
         SizedBox(
-          height: SCREEN_HEIGHT * 0.1,
+          height: SCREEN_HEIGHT * 0.05,
+        ),
+        Container(
+            height: SCREEN_HEIGHT * 0.06,
+            width: SCREEN_WIDTH * 0.95,
+            child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 245, 245, 245),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5)),
+              ),
+              onPressed: () {},
+              child: Row(
+                children: [
+                  const Icon(Icons.password),
+                  SizedBox(
+                    width: SCREEN_WIDTH * 0.2,
+                  ),
+                  const Text("Change Password")
+                ],
+              ),
+            )),
+        SizedBox(
+          height: SCREEN_HEIGHT * 0.01,
+        ),
+        Container(
+            height: SCREEN_HEIGHT * 0.06,
+            width: SCREEN_WIDTH * 0.95,
+            child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 245, 245, 245),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5)),
+              ),
+              onPressed: () {},
+              child: Row(
+                children: [
+                  const Icon(Icons.grid_3x3),
+                  SizedBox(
+                    width: SCREEN_WIDTH * 0.17,
+                  ),
+                  const Text("Use Tictactoe Password")
+                ],
+              ),
+            )),
+        SizedBox(
+          height: SCREEN_HEIGHT * 0.01,
         ),
         Container(
           height: SCREEN_HEIGHT * 0.06,
-          width: SCREEN_WIDTH,
+          width: SCREEN_WIDTH * 0.95,
           child: OutlinedButton(
             onPressed: () async {
               await showDialog(

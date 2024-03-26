@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -103,7 +102,7 @@ class _PlayroomState extends State<Playroom> {
                                         child: Row(
                                           children: [
                                             SizedBox(
-                                              width: SCREEN_WIDTH * 0.15,
+                                              width: SCREEN_WIDTH * 0.1,
                                             ),
                                             const Text("VS."),
                                           ],

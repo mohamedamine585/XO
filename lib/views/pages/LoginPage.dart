@@ -99,13 +99,18 @@ class _LoginPageState extends State<LoginPage> {
                         // Login Button
                         ElevatedButton(
                           style: ButtonStyle(
+                              backgroundColor: MaterialStateColor.resolveWith(
+                                  (states) =>
+                                      Color.fromARGB(255, 153, 45, 193)),
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10))),
                               fixedSize: MaterialStateProperty.all(Size(
                                   SCREEN_WIDTH * 0.5, SCREEN_HEIGHT * 0.05))),
                           onPressed: _handleLogin,
-                          child: Text(
+                          child: const Text(
                             "Let's Conquer",
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 15, 5, 118)),
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
                         SizedBox(

@@ -39,24 +39,20 @@ class _HomePageState extends State<HomePage> {
                           page = 0;
                         });
                       },
-                      icon: const Icon(Icons.book)),
+                      icon: const Icon(Icons.home)),
                   label: "home"),
               BottomNavigationBarItem(
-                  icon: Container(
-                      width: 80,
-                      child: IconButton(
-                          color: (page == 1) ? Colors.purple : null,
-                          onPressed: () {
-                            setState(() {
-                              page = 1;
-                            });
-                          },
-                          icon: Text(
-                            "XO",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: (page == 1) ? Colors.purple : null),
-                          ))),
+                  icon: IconButton(
+                      color: (page == 1) ? Colors.purple : null,
+                      onPressed: () {
+                        setState(() {
+                          page = 1;
+                        });
+                      },
+                      icon: const Icon(
+                        Icons.grid_3x3,
+                        size: 30,
+                      )),
                   label: "playground"),
               BottomNavigationBarItem(
                   icon: IconButton(

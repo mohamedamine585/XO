@@ -131,13 +131,17 @@ class _SignupPageState extends State<SignupPage> {
                     // Login Button
                     ElevatedButton(
                       style: ButtonStyle(
+                          backgroundColor: MaterialStateColor.resolveWith(
+                              (states) => Color.fromARGB(255, 153, 45, 193)),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
                           fixedSize: MaterialStateProperty.all(
                               Size(SCREEN_WIDTH * 0.5, SCREEN_HEIGHT * 0.05))),
                       onPressed: _handleSignup,
-                      child: Text(
+                      child: const Text(
                         "Let's play",
-                        style:
-                            TextStyle(color: Color.fromARGB(255, 15, 5, 118)),
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                     SizedBox(
