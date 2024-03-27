@@ -44,7 +44,6 @@ class PlayerdataAcess {
           body: json.encode({"name": playername, "email": player?.email}),
           headers: {
             "Authorization": "Bearer ${player?.token}",
-            "update": "name"
           });
       final responsebody = json.decode(response.body);
       return responsebody;
@@ -63,7 +62,6 @@ class PlayerdataAcess {
           body: json.encode({"name": playername, "email": player?.email}),
           headers: {
             "Authorization": "Bearer ${player?.token}",
-            "update": "email"
           });
       final responsebody = json.decode(response.body);
       return responsebody;

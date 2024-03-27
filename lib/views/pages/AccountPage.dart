@@ -9,6 +9,7 @@ import 'package:tictactoe_client/entities/Player.dart';
 import 'package:tictactoe_client/repositories/MetaDataRepository.dart';
 import 'package:tictactoe_client/repositories/PlayerRepository.dart';
 import 'package:tictactoe_client/views/Widgets/ImageWidget.dart';
+import 'package:tictactoe_client/views/Widgets/TictactoePassword.dart';
 import 'package:tictactoe_client/views/Widgets/verifyEmailButton.dart';
 import 'package:tictactoe_client/views/dialogs/alertdialog.dart';
 import 'package:tictactoe_client/views/dialogs/generaldialgo.dart';
@@ -103,7 +104,7 @@ class _AccountPageState extends State<AccountPage> {
         SizedBox(
           height: SCREEN_HEIGHT * 0.1,
         ),
-        verifyemailWidget,
+        !(isEmailVerified ?? false) ? verifyemailWidget : SizedBox(),
         SizedBox(
           height: SCREEN_HEIGHT * 0.05,
         ),
@@ -229,7 +230,20 @@ class _AccountPageState extends State<AccountPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5)),
               ),
-              onPressed: () {},
+              onPressed: () async {
+                final passwordverif = await Navigator.of(context)
+                    .pushNamed("passwordverif") as bool?;
+                if (passwordverif ?? false) {
+                  await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return TictactoePasswordDialog(
+                            token: player?.token,
+                            email: player?.email ?? "",
+                            onCreate: true);
+                      });
+                }
+              },
               child: Row(
                 children: [
                   const Icon(Icons.grid_3x3),

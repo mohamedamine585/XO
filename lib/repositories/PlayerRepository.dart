@@ -1,7 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tictactoe_client/data/PlayerdataAccess.dart';
 import 'package:tictactoe_client/data/authDataAcess.dart';
-import 'package:tictactoe_client/data/cachedData.dart';
 import 'package:tictactoe_client/entities/Player.dart';
 
 class playerRepository {
@@ -10,9 +9,33 @@ class playerRepository {
       final token =
           await AuthDataAcess.signin(email: email, password: password);
 
-      await CachedData.cacheToken(token: token ?? "");
+      return token;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static ticSignIn(
+      {required String email, required List<int> tictactoe}) async {
+    try {
+      final token = await AuthDataAcess.tictactoeSignIn(
+          tictactoe: tictactoe, email: email);
 
       return token;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static ticSignUp(
+      {required String token,
+      required List<int> tictactoe,
+      required String email}) async {
+    try {
+      final newtoken = await AuthDataAcess.setTictactoePassword(
+          email: email, tictactoe: tictactoe, token: token);
+
+      return newtoken;
     } catch (e) {
       print(e);
     }

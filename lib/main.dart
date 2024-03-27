@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tictactoe_client/entities/Player.dart';
+import 'package:tictactoe_client/views/Widgets/TictactoePassword.dart';
 import 'package:tictactoe_client/views/pages/AccountPage.dart';
 import 'package:tictactoe_client/views/pages/HomePage.dart';
 import 'package:tictactoe_client/views/pages/LoginPage.dart';
+import 'package:tictactoe_client/views/pages/PasswordVerif.dart';
 import 'package:tictactoe_client/views/pages/PlayRoom.dart';
 import 'package:tictactoe_client/views/pages/Router.dart';
 import 'package:tictactoe_client/views/pages/SignupPage.dart';
@@ -23,8 +25,9 @@ class MyApp extends StatelessWidget {
           "home": (context) => const HomePage(),
           "signin": (context) => LoginPage(),
           "signup": (context) => SignupPage(),
-          "router": (context) => RouterPage(),
-          "aacount": (context) => AccountPage(),
+          "router": (context) => const RouterPage(),
+          "account": (context) => const AccountPage(),
+          "passwordverif": (context) => const PasswordVerif()
         },
         home: RouterPage(),
         theme: ThemeData(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tictactoe_client/views/Widgets/TextFieldPassword.dart';
+import 'package:tictactoe_client/views/Widgets/TictactoePassword.dart';
 
 import 'package:tictactoe_client/views/dialogs/autherrordialog.dart';
 import 'package:tictactoe_client/views/utils.dart';
@@ -13,11 +15,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   // TextEditingController for handling text input
   TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
-  Future<void> _handleLogin() async {
+  Future<void> _handleLogin(String password) async {
     String email = _emailController.text;
-    String password = _passwordController.text;
 
     setState(() {
       _isLoading = true;
@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
 
     final token =
         await playerRepository.signIn(email: email, password: password);
+
     setState(() {
       _isLoading = false;
     });
@@ -79,22 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 16.0),
-
-                        Container(
-                          height: SCREEN_HEIGHT * 0.08,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.black)),
-                          child: TextField(
-                            controller: _passwordController,
-                            decoration: InputDecoration(
-                              labelText: 'Password',
-                            ),
-                            obscureText: true, // Hide the entered text
-                          ),
-                        ),
-                        SizedBox(height: 32.0),
+                        SizedBox(height: SCREEN_HEIGHT * 0.1),
 
                         // Login Button
                         ElevatedButton(
@@ -107,9 +93,55 @@ class _LoginPageState extends State<LoginPage> {
                                       borderRadius: BorderRadius.circular(10))),
                               fixedSize: MaterialStateProperty.all(Size(
                                   SCREEN_WIDTH * 0.5, SCREEN_HEIGHT * 0.05))),
-                          onPressed: _handleLogin,
+                          onPressed: () async {
+                            final password = await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const TextFieldPassword();
+                                });
+                            _handleLogin(password);
+                          },
                           child: const Text(
-                            "Let's Conquer",
+                            "SigIn with password",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        SizedBox(
+                          height: SCREEN_HEIGHT * 0.01,
+                        ),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateColor.resolveWith(
+                                  (states) =>
+                                      Color.fromARGB(255, 193, 45, 136)),
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10))),
+                              fixedSize: MaterialStateProperty.all(Size(
+                                  SCREEN_WIDTH * 0.5, SCREEN_HEIGHT * 0.05))),
+                          onPressed: () async {
+                            final newtoken = await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return TictactoePasswordDialog(
+                                    token: null,
+                                    email: _emailController.text,
+                                    onCreate: false,
+                                  );
+                                });
+                            if (newtoken != null) {
+                              (await SharedPreferences.getInstance())
+                                  .setString("token", newtoken);
+
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  "home", (route) => false);
+                            } else {
+                              showAutherrorDialog(
+                                  context, "Error", "Wrong tictactoe");
+                            }
+                          },
+                          child: const Text(
+                            "Sigin with tictactoe",
                             style: TextStyle(color: Colors.white),
                           ),
                         ),

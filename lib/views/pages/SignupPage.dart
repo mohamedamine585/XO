@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:tictactoe_client/views/dialogs/autherrordialog.dart';
 import 'package:tictactoe_client/views/utils.dart';
@@ -53,6 +54,8 @@ class _SignupPageState extends State<SignupPage> {
       isLoading = false;
     });
     if (token != null) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString("token", token ?? "");
       Navigator.of(context).pushNamedAndRemoveUntil("router", (route) => false);
     } else {
       showAutherrorDialog(context, "Signup error", "Cannot sign you up");
