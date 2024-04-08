@@ -31,7 +31,7 @@ Dialog Function(BuildContext, String, String, String, String, Widget)
           ),
           Container(
               width: SCREEN_WIDTH * 0.7,
-              height: SCREEN_HEIGHT * 0.3,
+              height: SCREEN_HEIGHT * 0.25,
               child: specialwidget),
           SizedBox(
             height: SCREEN_HEIGHT * 0.05,

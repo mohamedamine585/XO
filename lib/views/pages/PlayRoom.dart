@@ -86,6 +86,7 @@ class _PlayroomState extends State<Playroom> {
                           children: [
                             Center(
                               child: Container(
+                                  height: SCREEN_HEIGHT * 0.15,
                                   width: SCREEN_WIDTH * 0.8,
                                   child: Row(
                                     mainAxisAlignment:
@@ -94,7 +95,18 @@ class _PlayroomState extends State<Playroom> {
                                       Container(
                                         child: Column(children: [
                                           imageWidget(player, context, 30),
-                                          Text(player?.playername ?? "Unknown")
+                                          Container(
+                                              width: SCREEN_WIDTH * 0.2,
+                                              child: Center(
+                                                child: Text(
+                                                  player?.playername ??
+                                                      "Unknown",
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                      fontSize: 15),
+                                                ),
+                                              ))
                                         ]),
                                       ),
                                       Container(
@@ -122,10 +134,13 @@ class _PlayroomState extends State<Playroom> {
                                     ],
                                   )),
                             ),
-                            SizedBox(height: SCREEN_HEIGHT * 0.05),
+                            SizedBox(
+                              height: SCREEN_HEIGHT * 0.05,
+                            ),
                             Text(data["message"] ?? ""),
                             Container(
                               height: SCREEN_HEIGHT * 0.55,
+                              width: SCREEN_HEIGHT * 0.5,
                               child: GridView.builder(
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
@@ -222,9 +237,13 @@ class _PlayroomState extends State<Playroom> {
                       height: SCREEN_HEIGHT * 0.1,
                     ),
                     Container(
+                      height: SCREEN_HEIGHT * 0.07,
                       width: SCREEN_WIDTH * 0.7,
                       child: ElevatedButton(
                           style: ButtonStyle(
+                            shape: MaterialStatePropertyAll(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10))),
                             elevation: MaterialStateProperty.all(10),
                           ),
                           onPressed: () async {
@@ -237,12 +256,19 @@ class _PlayroomState extends State<Playroom> {
                               isPlaying = true;
                             });
                           },
-                          child: const Text("Play")),
+                          child: const Text("Create Room")),
+                    ),
+                    SizedBox(
+                      height: SCREEN_HEIGHT * 0.01,
                     ),
                     Container(
                       width: SCREEN_WIDTH * 0.7,
+                      height: SCREEN_HEIGHT * 0.07,
                       child: ElevatedButton(
                           style: ButtonStyle(
+                              shape: MaterialStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10))),
                               elevation: MaterialStateProperty.all(10),
                               backgroundColor: MaterialStateProperty.all(
                                   Color.fromARGB(239, 98, 7, 121))),
@@ -265,7 +291,7 @@ class _PlayroomState extends State<Playroom> {
                             }
                           },
                           child: const Text(
-                            "Play With A Friend",
+                            "Create Private Room",
                             style: TextStyle(color: Colors.white),
                           )),
                     ),
@@ -275,8 +301,8 @@ class _PlayroomState extends State<Playroom> {
                     Container(
                         width: SCREEN_HEIGHT * 0.3,
                         height: SCREEN_WIDTH * 0.3,
-                        child: IconButton(
-                          onPressed: () async {
+                        child: GestureDetector(
+                          onTap: () async {
                             showDialog(
                                 context: context,
                                 builder: (context) {
@@ -288,7 +314,10 @@ class _PlayroomState extends State<Playroom> {
                                   );
                                 });
                           },
-                          icon: Image.asset("assets/images/qrcode.png"),
+                          child: Container(
+                              width: SCREEN_HEIGHT * 0.2,
+                              height: SCREEN_WIDTH * 0.27,
+                              child: Image.asset("assets/images/qrcode.png")),
                         )),
                     Container(
                       child: const Text(

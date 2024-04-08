@@ -1,7 +1,8 @@
-import 'dart:math';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tictactoe_client/repositories/PlayerRepository.dart';
+import 'package:tictactoe_client/views/dialogs/alertdialog.dart';
+import 'package:tictactoe_client/views/dialogs/generaldialgo.dart';
 import 'package:tictactoe_client/views/utils.dart';
 
 class TictactoePasswordDialog extends StatefulWidget {
@@ -29,17 +30,17 @@ class _TictactoePasswordDialogState extends State<TictactoePasswordDialog> {
       child: Column(
         children: [
           Container(
-            margin: EdgeInsets.only(top: SCREEN_HEIGHT * 0.1),
+            margin: EdgeInsets.only(top: SCREEN_HEIGHT * 0.05),
+            width: SCREEN_HEIGHT * 0.9,
+            height: SCREEN_HEIGHT * 0.43,
             child: Dialog(
-              child: Container(
-                height: SCREEN_HEIGHT * 0.358,
-                width: SCREEN_WIDTH * 0.65,
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3, childAspectRatio: 1),
-                  itemCount: 9,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3, childAspectRatio: 1),
+                itemCount: 9,
+                itemBuilder: (context, index) {
+                  return Container(
+                    child: GestureDetector(
                         onTap: () async {
                           if (!tictactoe.contains(index)) {
                             setState(() {
@@ -87,9 +88,9 @@ class _TictactoePasswordDialogState extends State<TictactoePasswordDialog> {
                               ),
                             ),
                           ),
-                        ));
-                  },
-                ),
+                        )),
+                  );
+                },
               ),
             ),
           ),
@@ -112,7 +113,7 @@ class _TictactoePasswordDialogState extends State<TictactoePasswordDialog> {
             ),
           ),
           SizedBox(
-            height: SCREEN_HEIGHT * 0.1,
+            height: SCREEN_HEIGHT * 0.05,
           ),
           (widget.onCreate)
               ? ElevatedButton(
@@ -124,18 +125,32 @@ class _TictactoePasswordDialogState extends State<TictactoePasswordDialog> {
                       fixedSize: MaterialStateProperty.all(
                           Size(SCREEN_WIDTH * 0.65, SCREEN_HEIGHT * 0.05))),
                   onPressed: () async {
-                    setState(() {
-                      isloading = true;
-                    });
-                    final newtoken = await playerRepository.ticSignUp(
-                        email: widget.email,
-                        token: widget.token ?? "",
-                        tictactoe: tictactoe);
+                    if (tictactoe.length >= 4) {
+                      setState(() {
+                        isloading = true;
+                      });
+                      final newtoken = await playerRepository.ticSignUp(
+                          email: widget.email,
+                          token: widget.token ?? "",
+                          tictactoe: tictactoe);
 
-                    setState(() {
-                      isloading = false;
-                    });
-                    Navigator.of(context).pop(newtoken);
+                      setState(() {
+                        isloading = false;
+                      });
+                      Navigator.of(context).pop(newtoken);
+                    } else {
+                      await showDialog(
+                          context: context,
+                          builder: (context) {
+                            return generaldialog(
+                                context,
+                                "Error",
+                                "Tictactoe must be at least 4 tics",
+                                "OK",
+                                "Cancel",
+                                SizedBox());
+                          });
+                    }
                   },
                   child: const Text(
                     "Set Tictactoe Password",

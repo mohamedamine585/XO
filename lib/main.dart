@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tictactoe_client/entities/HomePageData.dart';
 import 'package:tictactoe_client/entities/Player.dart';
 import 'package:tictactoe_client/views/Widgets/TictactoePassword.dart';
 import 'package:tictactoe_client/views/pages/AccountPage.dart';
@@ -18,7 +19,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => PlayerState())],
+      providers: [
+        ChangeNotifierProvider(create: (context) => PlayerState()),
+        ChangeNotifierProvider(create: (context) => HomePageState())
+      ],
       child: MaterialApp(
         routes: {
           "playroom": (context) => Playroom(),
@@ -32,7 +36,12 @@ class MyApp extends StatelessWidget {
         home: RouterPage(),
         theme: ThemeData(
             textTheme: TextTheme(
-          titleMedium: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          titleMedium: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
+            color: Colors.purple,
+            fontFamily: 'Hind',
+          ),
           titleSmall: TextStyle(fontSize: 10),
           bodyMedium: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           bodySmall: TextStyle(

@@ -24,8 +24,6 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
                 height: SCREEN_HEIGHT * 0.05,
               ),
               Container(
-                height: SCREEN_HEIGHT * 0.08,
-                width: SCREEN_WIDTH * 0.9,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: Colors.black)),

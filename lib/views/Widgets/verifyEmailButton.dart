@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:tictactoe_client/views/utils.dart';
 
 final verifyemailWidget = Container(
-  height: SCREEN_HEIGHT * 0.25,
+  height: SCREEN_HEIGHT * 0.35,
   width: SCREEN_WIDTH * 0.95,
   child: Card(
     color: Color.fromARGB(255, 239, 238, 238),
     child: Column(
       children: [
         Container(
+          height: SCREEN_HEIGHT * 0.2,
           margin: EdgeInsets.only(
               left: SCREEN_WIDTH * 0.05, top: SCREEN_HEIGHT * 0.02),
           child: const Text(
@@ -19,6 +20,7 @@ final verifyemailWidget = Container(
           height: SCREEN_HEIGHT * 0.05,
         ),
         Container(
+          height: SCREEN_HEIGHT * 0.06,
           width: SCREEN_WIDTH * 0.9,
           child: OutlinedButton(
             onPressed: () {},

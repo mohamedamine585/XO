@@ -69,7 +69,6 @@ class _LoginPageState extends State<LoginPage> {
                     Column(
                       children: [
                         Container(
-                          height: SCREEN_HEIGHT * 0.08,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(color: Colors.black)),
@@ -80,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: SCREEN_HEIGHT * 0.1),
+                        SizedBox(height: SCREEN_HEIGHT * 0.05),
 
                         // Login Button
                         ElevatedButton(

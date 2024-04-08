@@ -1,7 +1,9 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -44,12 +46,14 @@ class _AccountPageState extends State<AccountPage> {
       child: Column(children: [
         Container(
           margin: EdgeInsets.only(top: SCREEN_HEIGHT * 0.1),
+          width: 160,
+          height: 160,
           child: Stack(
             children: [
-              imageWidget(player, context, 70),
+              imageWidget(player, context, 80),
               Positioned(
-                  top: SCREEN_HEIGHT * 0.12,
-                  left: SCREEN_WIDTH * 0.25,
+                  top: 120,
+                  left: 120,
                   child: Container(
                       height: SCREEN_HEIGHT * 0.05,
                       width: SCREEN_WIDTH * 0.1,
@@ -97,9 +101,15 @@ class _AccountPageState extends State<AccountPage> {
         SizedBox(
           height: SCREEN_HEIGHT * 0.02,
         ),
-        Text(
-          player?.playername ?? "",
-          style: Theme.of(context).textTheme.titleMedium,
+        Container(
+          width: SCREEN_WIDTH * 0.7,
+          child: Center(
+            child: Text(
+              context.watch<PlayerState>().player?.playername ?? "",
+              style: Theme.of(context).textTheme.titleMedium,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ),
         SizedBox(
           height: SCREEN_HEIGHT * 0.1,
@@ -108,125 +118,137 @@ class _AccountPageState extends State<AccountPage> {
         SizedBox(
           height: SCREEN_HEIGHT * 0.05,
         ),
-        Row(
-          children: [
-            Container(
-                margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.01),
-                width: SCREEN_WIDTH * 0.70,
-                height: SCREEN_HEIGHT * 0.09,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email',
+        Container(
+          margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.01),
+          child: Row(
+            children: [
+              Container(
+                  width: SCREEN_WIDTH * 0.70,
+                  height: SCREEN_HEIGHT * 0.1,
+                  child: Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Email',
+                      ),
+                      controller: emailcontroller,
+                      onChanged: (value) {
+                        setState(() {
+                          emailchanged = player?.email != value;
+                        });
+                      },
+                    ),
+                  )),
+              Container(
+                width: SCREEN_WIDTH * 0.23,
+                margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.05),
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                      disabledBackgroundColor:
+                          Color.fromARGB(186, 158, 72, 233),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                      backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => Color.fromARGB(255, 87, 10, 160))),
+                  onPressed: (emailchanged) ? () async {} : null,
+                  child: const Text(
+                    "Confirm",
+                    style: TextStyle(color: Colors.white),
                   ),
-                  controller: emailcontroller,
-                  onChanged: (value) {
-                    setState(() {
-                      emailchanged = player?.email != value;
-                    });
-                  },
-                )),
-            Container(
-              width: SCREEN_WIDTH * 0.23,
-              margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.05),
-              child: TextButton(
-                style: TextButton.styleFrom(
-                    disabledBackgroundColor: Color.fromARGB(186, 158, 72, 233),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5))),
-                    backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => Color.fromARGB(255, 87, 10, 160))),
-                onPressed: (emailchanged) ? () async {} : null,
-                child: const Text(
-                  "Confirm",
-                  style: TextStyle(color: Colors.white),
                 ),
-              ),
-            )
-          ],
-        ),
-        SizedBox(
-          height: SCREEN_HEIGHT * 0.05,
-        ),
-        Row(
-          children: [
-            Container(
-                margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.01),
-                width: SCREEN_WIDTH * 0.70,
-                height: SCREEN_HEIGHT * 0.09,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Name',
-                  ),
-                  controller: namecontroller,
-                  onChanged: (value) {
-                    setState(() {
-                      namechanged = player?.playername != value;
-                    });
-                  },
-                )),
-            Container(
-              width: SCREEN_WIDTH * 0.23,
-              margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.05),
-              child: TextButton(
-                style: TextButton.styleFrom(
-                    disabledBackgroundColor: Color.fromARGB(186, 158, 72, 233),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5))),
-                    backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => Color.fromARGB(255, 87, 10, 160))),
-                onPressed: (namechanged)
-                    ? () async {
-                        final playerdoc = await playerRepository.setName(
-                            playername: namecontroller.text, player: player);
-                        if (playerdoc?.isNotEmpty ?? false) {
-                          context
-                              .read<PlayerState>()
-                              .setName(namecontroller.text);
-                        }
-                      }
-                    : null,
-                child: const Text(
-                  "Confirm",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
         SizedBox(
           height: SCREEN_HEIGHT * 0.05,
         ),
         Container(
-            height: SCREEN_HEIGHT * 0.06,
+          margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.01),
+          child: Row(
+            children: [
+              Container(
+                  width: SCREEN_WIDTH * 0.70,
+                  height: SCREEN_HEIGHT * 0.1,
+                  child: Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Name',
+                      ),
+                      controller: namecontroller,
+                      onChanged: (value) {
+                        setState(() {
+                          namechanged = player?.playername != value;
+                        });
+                      },
+                    ),
+                  )),
+              Container(
+                width: SCREEN_WIDTH * 0.23,
+                margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.05),
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                      disabledBackgroundColor:
+                          Color.fromARGB(186, 158, 72, 233),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                      backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => Color.fromARGB(255, 87, 10, 160))),
+                  onPressed: (namechanged)
+                      ? () async {
+                          final playerdoc = await playerRepository.setName(
+                              playername: namecontroller.text, player: player);
+                          if (playerdoc?.isNotEmpty ?? false) {
+                            context
+                                .read<PlayerState>()
+                                .setName(namecontroller.text);
+                          }
+                        }
+                      : null,
+                  child: const Text(
+                    "Confirm",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+        SizedBox(
+          height: SCREEN_HEIGHT * 0.15,
+        ),
+        Container(
+            height: SCREEN_HEIGHT * 0.1,
             width: SCREEN_WIDTH * 0.95,
             child: OutlinedButton(
               style: OutlinedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 245, 245, 245),
+                backgroundColor: Color.fromARGB(255, 244, 244, 244),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5)),
               ),
               onPressed: () {},
-              child: Row(
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Icon(Icons.password),
-                  SizedBox(
-                    width: SCREEN_WIDTH * 0.2,
+                  Icon(Icons.password),
+                  Text("Change Password"),
+                  Text(
+                    ">",
+                    style: TextStyle(fontSize: 30),
                   ),
-                  const Text("Change Password")
                 ],
               ),
             )),
         SizedBox(
-          height: SCREEN_HEIGHT * 0.01,
+          height: SCREEN_HEIGHT * 0.02,
         ),
         Container(
-            height: SCREEN_HEIGHT * 0.06,
+            height: SCREEN_HEIGHT * 0.1,
             width: SCREEN_WIDTH * 0.95,
             child: OutlinedButton(
               style: OutlinedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 245, 245, 245),
+                backgroundColor: Color.fromARGB(255, 244, 244, 244),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5)),
               ),
@@ -242,23 +264,32 @@ class _AccountPageState extends State<AccountPage> {
                             email: player?.email ?? "",
                             onCreate: true);
                       });
+                } else {
+                  await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return generaldialog(context, "Error", "Wrong Password",
+                            "OK", "Cancel", SizedBox());
+                      });
                 }
               },
-              child: Row(
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Icon(Icons.grid_3x3),
-                  SizedBox(
-                    width: SCREEN_WIDTH * 0.17,
+                  Icon(Icons.grid_3x3),
+                  Text("Use Tictactoe Password"),
+                  Text(
+                    ">",
+                    style: TextStyle(fontSize: 30),
                   ),
-                  const Text("Use Tictactoe Password")
                 ],
               ),
             )),
         SizedBox(
-          height: SCREEN_HEIGHT * 0.01,
+          height: SCREEN_HEIGHT * 0.05,
         ),
         Container(
-          height: SCREEN_HEIGHT * 0.06,
+          height: SCREEN_HEIGHT * 0.08,
           width: SCREEN_WIDTH * 0.95,
           child: OutlinedButton(
             onPressed: () async {
