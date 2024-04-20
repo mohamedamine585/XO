@@ -2,16 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:tictactoe_client/entities/Player.dart';
 
 import 'package:tictactoe_client/repositories/GamesRepository.dart';
+import 'package:tictactoe_client/views/ProviderSates/PlayerState.dart';
 
 import 'package:tictactoe_client/views/utils.dart';
 
 Widget gameHistoryWidget(BuildContext context) {
   return Container(
       width: SCREEN_WIDTH * 0.98,
-      height: SCREEN_HEIGHT * 0.7,
+      height: SCREEN_HEIGHT * 0.6,
       child: FutureBuilder<List<Map<String, dynamic>>?>(
           future: GamesRepository.getGamesHistory(
               token: context.watch<PlayerState>().player?.token ?? ""),
@@ -21,11 +21,18 @@ Widget gameHistoryWidget(BuildContext context) {
                 return ListView.builder(
                   itemCount: snapshot0.data?.length,
                   itemBuilder: (context, index) {
-                    return Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5)),
-                      color: Color.fromARGB(255, 243, 239, 247),
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 2),
+                      width: SCREEN_WIDTH * 0.9,
+                      height: SCREEN_HEIGHT * 0.08,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          gradient: LinearGradient(colors: [
+                            Colors.white,
+                            (snapshot0.data?.elementAt(index)["winner"] == 1)
+                                ? Color.fromARGB(255, 241, 19, 123)
+                                : Color.fromARGB(255, 159, 7, 236),
+                          ])),
                       child: ListTile(
                         title: Text((snapshot0.data
                                     ?.elementAt(index)["creatorname"] ==
@@ -39,14 +46,14 @@ Widget gameHistoryWidget(BuildContext context) {
                                 ? Text(
                                     "Lost",
                                     style: TextStyle(
-                                        color: Colors.red,
+                                        color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15),
                                   )
                                 : Text(
                                     "Won",
                                     style: TextStyle(
-                                        color: Colors.green,
+                                        color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15),
                                   ),

@@ -1,10 +1,10 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tictactoe_client/views/ProviderSates/PlayerState.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:tictactoe_client/entities/Player.dart';
@@ -286,7 +286,36 @@ class _AccountPageState extends State<AccountPage> {
               ),
             )),
         SizedBox(
-          height: SCREEN_HEIGHT * 0.05,
+          height: SCREEN_HEIGHT * 0.1,
+        ),
+        Container(
+          height: SCREEN_HEIGHT * 0.08,
+          width: SCREEN_WIDTH * 0.95,
+          child: OutlinedButton(
+            onPressed: () async {
+              final confirmation = await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return alertdialog(context, "Do you want to logout");
+                  });
+              if (confirmation) {
+                (await SharedPreferences.getInstance()).setString("token", "");
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil("router", (route) => false);
+              }
+            },
+            child: Text(
+              "Log out",
+              style: TextStyle(color: Colors.white),
+            ),
+            style: OutlinedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 227, 25, 35),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5))),
+          ),
+        ),
+        SizedBox(
+          height: SCREEN_HEIGHT * 0.02,
         ),
         Container(
           height: SCREEN_HEIGHT * 0.08,
@@ -296,7 +325,8 @@ class _AccountPageState extends State<AccountPage> {
               await showDialog(
                   context: context,
                   builder: (context) {
-                    return alertdialog(context);
+                    return alertdialog(
+                        context, "do you want to delete account ?");
                   });
             },
             child: Text(

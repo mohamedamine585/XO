@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tictactoe_client/entities/HomePageData.dart';
-import 'package:tictactoe_client/entities/Player.dart';
-import 'package:tictactoe_client/views/Widgets/TictactoePassword.dart';
+import 'package:tictactoe_client/views/ProviderSates/HomePageData.dart';
 import 'package:tictactoe_client/views/pages/AccountPage.dart';
 import 'package:tictactoe_client/views/pages/HomePage.dart';
 import 'package:tictactoe_client/views/pages/LoginPage.dart';
@@ -10,6 +8,7 @@ import 'package:tictactoe_client/views/pages/PasswordVerif.dart';
 import 'package:tictactoe_client/views/pages/PlayRoom.dart';
 import 'package:tictactoe_client/views/pages/Router.dart';
 import 'package:tictactoe_client/views/pages/SignupPage.dart';
+import 'package:tictactoe_client/views/ProviderSates/PlayerState.dart';
 
 void main() {
   runApp(MyApp());

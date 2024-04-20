@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tictactoe_client/repositories/PlayerRepository.dart';
-import 'package:tictactoe_client/views/dialogs/alertdialog.dart';
 import 'package:tictactoe_client/views/dialogs/generaldialgo.dart';
 import 'package:tictactoe_client/views/utils.dart';
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tictactoe_client/views/utils.dart';
 
-AlertDialog Function(BuildContext) alertdialog =
-    (BuildContext context) => AlertDialog(
+AlertDialog Function(BuildContext, String) alertdialog =
+    (BuildContext context, String message) => AlertDialog(
           content: Container(
             height: SCREEN_HEIGHT * 0.2,
             child: Column(
@@ -10,7 +10,7 @@ AlertDialog Function(BuildContext) alertdialog =
                 SizedBox(
                   height: SCREEN_HEIGHT * 0.1,
                 ),
-                Text("Wanna delete account ?"),
+                Text(message),
               ],
             ),
           ),
@@ -24,7 +24,7 @@ AlertDialog Function(BuildContext) alertdialog =
                     child: const Text("yes"))),
             TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop(true);
+                  Navigator.of(context).pop(false);
                 },
                 child: const Text("no"))
           ],

@@ -6,11 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tictactoe_client/data/gamesdata.dart';
-import 'package:tictactoe_client/entities/Player.dart';
 import 'package:tictactoe_client/utils.dart';
 import 'package:tictactoe_client/views/Widgets/ImageWidget.dart';
 import 'package:tictactoe_client/views/Widgets/opponentinfowidget.dart';
-
+import 'package:tictactoe_client/views/ProviderSates/PlayerState.dart';
 import 'package:tictactoe_client/views/utils.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';

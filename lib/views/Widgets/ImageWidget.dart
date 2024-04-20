@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:tictactoe_client/entities/Player.dart';
 import 'package:tictactoe_client/repositories/MetaDataRepository.dart';
 import 'package:tictactoe_client/views/utils.dart';
+import 'package:tictactoe_client/views/ProviderSates/PlayerState.dart';
 
 FutureBuilder<Uint8List?> Function(Player?, BuildContext, double) imageWidget =
     (Player? player, BuildContext generalcontext, double radius) {
