@@ -27,6 +27,17 @@ class playerRepository {
     }
   }
 
+  static changePassword(
+      {required String token, required String password}) async {
+    try {
+      await AuthDataAcess.changePassword(token: token, password: password);
+
+      return token;
+    } catch (e) {
+      print(e);
+    }
+  }
+
   static ticSignUp(
       {required String token,
       required List<int> tictactoe,
@@ -108,6 +119,22 @@ class playerRepository {
               playerData["isEmailVerified"] ?? false);
         }
       }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static Future<int?> askEmailVerification({required String token}) async {
+    try {
+      return await AuthDataAcess.askEmailVerification(token: token);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static Future<void> verifyEmail({required String token}) async {
+    try {
+      return await AuthDataAcess.verifyEmail(token: token);
     } catch (e) {
       print(e);
     }

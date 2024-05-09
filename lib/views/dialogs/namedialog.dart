@@ -6,7 +6,8 @@ import 'package:tictactoe_client/repositories/PlayerRepository.dart';
 
 class NameDialog extends StatefulWidget {
   Player? player;
-  NameDialog(this.player);
+  String hintText;
+  NameDialog(this.player, this.hintText);
   @override
   _NameDialogState createState() => _NameDialogState();
 }
@@ -34,7 +35,7 @@ class _NameDialogState extends State<NameDialog> {
               child: TextField(
                 controller: namecontroller,
                 decoration: InputDecoration(
-                  labelText: 'Your name',
+                  labelText: widget.hintText,
                 ),
               ),
             ),

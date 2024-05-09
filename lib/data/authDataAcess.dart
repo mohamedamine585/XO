@@ -72,4 +72,41 @@ class AuthDataAcess {
       print(e);
     }
   }
+
+  static askEmailVerification({required String token}) async {
+    try {
+      final resonse = await http.get(Uri.parse("$URL/verifyemail"),
+          headers: {"authorization": "Bearer $token"});
+      if (resonse.statusCode != 200) {
+        return null;
+      }
+      return json.decode(resonse.body)["random"];
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static changePassword(
+      {required String token, required String password}) async {
+    try {
+      await http.put(Uri.parse("$URL/player"),
+          headers: {"authorization": "Bearer $token"},
+          body: json.encode({"password": password}));
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static verifyEmail({required String token}) async {
+    try {
+      final resonse = await http.post(Uri.parse("$URL/verifyemail"),
+          headers: {"authorization": "Bearer $token"});
+      if (resonse.statusCode != 200) {
+        return null;
+      }
+      return json.decode(resonse.body)["random"];
+    } catch (e) {
+      print(e);
+    }
+  }
 }

@@ -35,7 +35,7 @@ class _BoardPageState extends State<BoardPage> {
     return await showDialog(
       context: context,
       builder: (context) {
-        return NameDialog(player);
+        return NameDialog(player, "Your name");
       },
     );
   }

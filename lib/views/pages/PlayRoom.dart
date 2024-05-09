@@ -134,15 +134,23 @@ class _PlayroomState extends State<Playroom> {
                                   )),
                             ),
                             SizedBox(
-                              height: SCREEN_HEIGHT * 0.05,
+                              height: SCREEN_HEIGHT * 0.04,
                             ),
-                            Text(data["message"] ?? ""),
+                            Text(
+                              data["message"] ?? "",
+                              style: const TextStyle(
+                                  color: Colors.pink, fontSize: 25),
+                            ),
                             Container(
                               height: SCREEN_HEIGHT * 0.55,
                               width: SCREEN_HEIGHT * 0.5,
                               child: GridView.builder(
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
+                                  mainAxisSpacing:
+                                      8.0, // Adjust this value as needed
+                                  crossAxisSpacing:
+                                      8.0, // Adjust this value as needed
                                   crossAxisCount: 3,
                                 ),
                                 itemCount: 9,
@@ -185,14 +193,6 @@ class _PlayroomState extends State<Playroom> {
                               height: SCREEN_HEIGHT * 0.3,
                             ),
                             CircularProgressIndicator(),
-                            ElevatedButton(
-                                onPressed: () async {
-                                  await channel?.sink.close();
-                                  isconnectionclosed = false;
-                                  Navigator.of(context).pushNamedAndRemoveUntil(
-                                      "router", (route) => false);
-                                },
-                                child: Text("Quit"))
                           ],
                         ),
                       );
@@ -341,6 +341,11 @@ class _PlayroomState extends State<Playroom> {
       },
       child: Container(
         decoration: BoxDecoration(
+          color: (board[index] == "X")
+              ? Color.fromARGB(255, 217, 184, 240)
+              : ((board[index] == "O")
+                  ? Color.fromARGB(255, 241, 190, 207)
+                  : Colors.white),
           border: Border.all(
             color: Colors.black,
           ),
@@ -348,7 +353,14 @@ class _PlayroomState extends State<Playroom> {
         child: Center(
           child: Text(
             board[index],
-            style: TextStyle(fontSize: 24),
+            style: TextStyle(
+              fontSize: 30,
+              color: (board[index] == "X")
+                  ? Color.fromARGB(255, 150, 27, 237)
+                  : ((board[index] == "O")
+                      ? Color.fromARGB(255, 246, 19, 94)
+                      : Colors.white),
+            ),
           ),
         ),
       ),

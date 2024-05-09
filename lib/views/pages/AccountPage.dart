@@ -15,6 +15,7 @@ import 'package:tictactoe_client/views/Widgets/TictactoePassword.dart';
 import 'package:tictactoe_client/views/Widgets/verifyEmailButton.dart';
 import 'package:tictactoe_client/views/dialogs/alertdialog.dart';
 import 'package:tictactoe_client/views/dialogs/generaldialgo.dart';
+import 'package:tictactoe_client/views/dialogs/namedialog.dart';
 import 'package:tictactoe_client/views/utils.dart';
 
 class AccountPage extends StatefulWidget {
@@ -114,7 +115,9 @@ class _AccountPageState extends State<AccountPage> {
         SizedBox(
           height: SCREEN_HEIGHT * 0.1,
         ),
-        !(isEmailVerified ?? false) ? verifyemailWidget : SizedBox(),
+        !(isEmailVerified ?? false)
+            ? verifyemailWidget(context, player?.token ?? "")
+            : SizedBox(),
         SizedBox(
           height: SCREEN_HEIGHT * 0.05,
         ),
@@ -227,7 +230,19 @@ class _AccountPageState extends State<AccountPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5)),
               ),
-              onPressed: () {},
+              onPressed: () async {
+                final passwordverif = await Navigator.of(context)
+                    .pushNamed("passwordverif") as bool?;
+                if (passwordverif ?? false) {
+                  final password = await showDialog(
+                      context: context,
+                      builder: (context) =>
+                          NameDialog(player, "your new password"));
+
+                  await playerRepository.changePassword(
+                      token: player?.token ?? "", password: password);
+                }
+              },
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
