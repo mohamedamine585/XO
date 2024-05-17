@@ -76,6 +76,23 @@ class playerRepository {
     } catch (e) {
       print(e);
     }
+    return null;
+  }
+
+  static Future<Map<String, dynamic>?> setEmail(
+      {required String playername,
+      required String email,
+      required Player? player}) async {
+    try {
+      final setnameRes = await PlayerdataAcess.setEmail(
+          playername: playername, email: email, player: player);
+      if (setnameRes?.isNotEmpty ?? false) {
+        return setnameRes;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return null;
   }
 
   static Future<Player?> getPlayerdata() async {
@@ -99,6 +116,7 @@ class playerRepository {
     } catch (e) {
       print(e);
     }
+    return null;
   }
 
   static Future<Player?> getPlayerById({required String id}) async {
@@ -106,7 +124,8 @@ class playerRepository {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString("token");
       if (token != null && token != "") {
-        final playerData = await PlayerdataAcess.getPlayerdata(token: token);
+        final playerData =
+            await PlayerdataAcess.getPlayerdataById(token: token, id: id);
         if (playerData != null) {
           return Player(
               playerData["name"] ?? "",
@@ -122,6 +141,7 @@ class playerRepository {
     } catch (e) {
       print(e);
     }
+    return null;
   }
 
   static Future<int?> askEmailVerification({required String token}) async {
@@ -130,6 +150,7 @@ class playerRepository {
     } catch (e) {
       print(e);
     }
+    return null;
   }
 
   static Future<void> verifyEmail({required String token}) async {

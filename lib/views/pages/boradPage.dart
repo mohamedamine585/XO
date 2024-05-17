@@ -58,7 +58,7 @@ class _BoardPageState extends State<BoardPage> {
                       .addPostFrameCallback((timeStamp) async {
                     final playername = await _showDialog(context);
                     if (playername != null) {
-                      context.read<PlayerState>().setName(playername);
+                      context.read<PlayerState>().setName(player, playername);
                     }
                   });
                 }

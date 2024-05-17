@@ -16,6 +16,7 @@ import 'package:tictactoe_client/views/Widgets/verifyEmailButton.dart';
 import 'package:tictactoe_client/views/dialogs/alertdialog.dart';
 import 'package:tictactoe_client/views/dialogs/generaldialgo.dart';
 import 'package:tictactoe_client/views/dialogs/namedialog.dart';
+import 'package:tictactoe_client/views/dialogs/textfieldDialog.dart';
 import 'package:tictactoe_client/views/utils.dart';
 
 class AccountPage extends StatefulWidget {
@@ -33,14 +34,14 @@ class _AccountPageState extends State<AccountPage> {
   @override
   void didChangeDependencies() {
     player = context.watch<PlayerState>().player;
-    emailcontroller.text = player?.email ?? "";
-    namecontroller.text = player?.playername ?? "";
+
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     final isEmailVerified = player?.isEmailVerified;
+
     return Scaffold(
         body: Center(
             child: SingleChildScrollView(
@@ -86,7 +87,7 @@ class _AccountPageState extends State<AccountPage> {
                                       image: File(image.path),
                                       token: player?.token ?? "");
                               (uploaded ?? false)
-                                  ? context.read<PlayerState>().setPhoto(
+                                  ? context.read<PlayerState>().setPhoto(player,
                                       await File(image.path).readAsBytes())
                                   : null;
 
@@ -106,7 +107,7 @@ class _AccountPageState extends State<AccountPage> {
           width: SCREEN_WIDTH * 0.7,
           child: Center(
             child: Text(
-              context.watch<PlayerState>().player?.playername ?? "",
+              player?.playername ?? "",
               style: Theme.of(context).textTheme.titleMedium,
               overflow: TextOverflow.ellipsis,
             ),
@@ -116,50 +117,39 @@ class _AccountPageState extends State<AccountPage> {
           height: SCREEN_HEIGHT * 0.1,
         ),
         !(isEmailVerified ?? false)
-            ? verifyemailWidget(context, player?.token ?? "")
+            ? verifyemailWidget(context, player)
             : SizedBox(),
         SizedBox(
           height: SCREEN_HEIGHT * 0.05,
         ),
         Container(
-          margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.01),
+            width: SCREEN_WIDTH * 0.70,
+            height: SCREEN_HEIGHT * 0.1,
+            child: const Text("Email")),
+        Container(
+          margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.02),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                   width: SCREEN_WIDTH * 0.70,
                   height: SCREEN_HEIGHT * 0.1,
-                  child: Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Email',
-                      ),
-                      controller: emailcontroller,
-                      onChanged: (value) {
-                        setState(() {
-                          emailchanged = player?.email != value;
-                        });
-                      },
-                    ),
-                  )),
-              Container(
-                width: SCREEN_WIDTH * 0.23,
-                margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.05),
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                      disabledBackgroundColor:
-                          Color.fromARGB(186, 158, 72, 233),
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(5))),
-                      backgroundColor: MaterialStateColor.resolveWith(
-                          (states) => Color.fromARGB(255, 87, 10, 160))),
-                  onPressed: (emailchanged) ? () async {} : null,
-                  child: const Text(
-                    "Confirm",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              )
+                  child: Text(player?.email ?? "")),
+              IconButton(
+                  onPressed: () async {
+                    final newEmail = await textFieldDialog(context);
+
+                    if (newEmail != "") {
+                      await playerRepository.setEmail(
+                          player: player,
+                          email: newEmail,
+                          playername: player?.playername ?? "");
+                      setState(() {
+                        player?.email = newEmail;
+                      });
+                    }
+                  },
+                  icon: const Icon(Icons.edit))
             ],
           ),
         ),
@@ -167,54 +157,33 @@ class _AccountPageState extends State<AccountPage> {
           height: SCREEN_HEIGHT * 0.05,
         ),
         Container(
-          margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.01),
+            width: SCREEN_WIDTH * 0.70,
+            height: SCREEN_HEIGHT * 0.1,
+            child: const Text("Name")),
+        Container(
+          margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.02),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                   width: SCREEN_WIDTH * 0.70,
                   height: SCREEN_HEIGHT * 0.1,
-                  child: Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Name',
-                      ),
-                      controller: namecontroller,
-                      onChanged: (value) {
+                  child: Text(player?.playername ?? "")),
+              IconButton(
+                  onPressed: () async {
+                    final newName = await textFieldDialog(context);
+
+                    if (newName != "") {
+                      final doc = await playerRepository.setName(
+                          playername: newName, player: player);
+                      if (doc?.isNotEmpty ?? false) {
                         setState(() {
-                          namechanged = player?.playername != value;
+                          player?.playername = newName;
                         });
-                      },
-                    ),
-                  )),
-              Container(
-                width: SCREEN_WIDTH * 0.23,
-                margin: EdgeInsets.only(left: SCREEN_WIDTH * 0.05),
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                      disabledBackgroundColor:
-                          Color.fromARGB(186, 158, 72, 233),
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(5))),
-                      backgroundColor: MaterialStateColor.resolveWith(
-                          (states) => Color.fromARGB(255, 87, 10, 160))),
-                  onPressed: (namechanged)
-                      ? () async {
-                          final playerdoc = await playerRepository.setName(
-                              playername: namecontroller.text, player: player);
-                          if (playerdoc?.isNotEmpty ?? false) {
-                            context
-                                .read<PlayerState>()
-                                .setName(namecontroller.text);
-                          }
-                        }
-                      : null,
-                  child: const Text(
-                    "Confirm",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              )
+                      }
+                    }
+                  },
+                  icon: const Icon(Icons.edit)),
             ],
           ),
         ),

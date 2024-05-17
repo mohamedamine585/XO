@@ -22,7 +22,7 @@ class RouterPage extends StatelessWidget {
           final token = snapshot.data?.getString("token");
           context.read<PlayerState>().setPlayer(null);
           if (token != null && token != "") {
-            context.read<PlayerState>().setToken(token);
+            context.read<PlayerState>().setToken(null, token);
             return const HomePage();
           } else {
             return LoginPage();

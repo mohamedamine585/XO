@@ -15,7 +15,7 @@ FutureBuilder<Uint8List?> Function(Player?, BuildContext, double) imageWidget =
           : null,
       builder: (context, snapshot) {
         if (snapshot.data != player?.photoBytes && snapshot.data != null) {
-          generalcontext.read<PlayerState>().setPhoto(snapshot.data!);
+          generalcontext.read<PlayerState>().setPhoto(player, snapshot.data!);
         }
         return CircleAvatar(
           foregroundImage: (snapshot.connectionState == ConnectionState.done)

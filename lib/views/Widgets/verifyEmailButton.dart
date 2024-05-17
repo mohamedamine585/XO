@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tictactoe_client/entities/Player.dart';
 import 'package:tictactoe_client/repositories/PlayerRepository.dart';
+import 'package:tictactoe_client/views/ProviderSates/PlayerState.dart';
 import 'package:tictactoe_client/views/dialogs/verifyemailDialog.dart';
 import 'package:tictactoe_client/views/utils.dart';
 
-final verifyemailWidget = (BuildContext context, String token) => Container(
+final verifyemailWidget = (BuildContext context, Player? player) => Container(
       height: SCREEN_HEIGHT * 0.35,
       width: SCREEN_WIDTH * 0.95,
       child: Card(
@@ -26,15 +29,20 @@ final verifyemailWidget = (BuildContext context, String token) => Container(
               width: SCREEN_WIDTH * 0.9,
               child: OutlinedButton(
                 onPressed: () async {
-                  final sentCode =
-                      await playerRepository.askEmailVerification(token: token);
+                  final sentCode = await playerRepository.askEmailVerification(
+                      token: player?.token ?? "");
+                  print(sentCode);
                   final typedCode = await showDialog(
                       context: context,
                       builder: (context) {
                         return VerifyEmailDialog();
                       }) as int?;
                   if (sentCode == typedCode) {
-                    await playerRepository.verifyEmail(token: token);
+                    await playerRepository.verifyEmail(
+                        token: player?.token ?? "");
+                    context
+                        .read<PlayerState>()
+                        .setisEmailVerified(player, true);
                   }
                 },
                 child: Text(

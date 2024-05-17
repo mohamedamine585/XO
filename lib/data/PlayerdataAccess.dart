@@ -55,11 +55,12 @@ class PlayerdataAcess {
 
   static Future<Map<String, dynamic>?> setEmail({
     required String playername,
+    required String email,
     required Player? player,
   }) async {
     try {
       final response = await http.put(Uri.parse("https://$GAME_URL/player"),
-          body: json.encode({"name": playername, "email": player?.email}),
+          body: json.encode({"name": playername, "email": email}),
           headers: {
             "Authorization": "Bearer ${player?.token}",
           });
